@@ -58,6 +58,7 @@ const Page = () => {
     return design;
   }
 
+  // On dev_abdul branch this signup code is stored.
   const design = (
     <>
       <div className="flex items-center justify-center bg-rose-500 min-h-screen">
