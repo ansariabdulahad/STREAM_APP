@@ -72,7 +72,7 @@ const Page = () => {
               return <Input key={index} item={item} />
             })
           }
-          <button className="bg-rose-600 p-3 w-full mt-3 rounded shadow text-white text-2xl uppercase">Submit</button>
+          <button className="bg-rose-600 p-3 w-full mt-3 rounded shadow text-white text-1xl uppercase">Submit</button>
         </div>
       </div>
     </>
