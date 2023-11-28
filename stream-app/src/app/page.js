@@ -34,9 +34,9 @@ const Page = () => {
     <>
       <Navbar
         fullWidth={true}
-        theme="primary"
+        theme="warning"
         varient="three"
-        fixed={true}
+        sticky={true}
         menu={menus}
       />
       <div style={{ width: '100%', height: '5000px' }}></div>
