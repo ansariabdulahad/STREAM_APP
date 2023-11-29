@@ -1,8 +1,11 @@
 'use client';
 
+import { useState } from "react";
 import { Button, Card, Navbar } from "../../Tailwind";
 
 const Page = () => {
+
+  const [show, setShow] = useState(true)
 
   const menus = {
     brand: 'Just For Code',
@@ -36,10 +39,16 @@ const Page = () => {
         fullWidth={true}
         theme="warning"
         varient="three"
-        sticky={true}
         menu={menus}
       />
-      <div style={{ width: '100%', height: '5000px' }}></div>
+      <Button
+        theme="error"
+        style={{
+          marginTop: '20px'
+        }}
+        onClick={() => setShow(!show)}
+      >TOGGLE</Button>
+      <img src="./marvel.jpg" alt="marvel-img" />
     </>
   );
   return design;
