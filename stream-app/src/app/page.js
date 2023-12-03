@@ -6,58 +6,33 @@ import { Button } from "../../Tailwind";
 
 const Page = () => {
 
-  const [pause, setPause] = useState(false);
-
-  const move = useSpring({
-    pause: pause,
+  const { scroll } = useSpring({
     loop: {
       reverse: true
     },
-    // delay: 2000,
-    from: {
-      color: 'red',
-      top: 0,
-      left: 0
-    },
-    to: {
-      color: 'green',
-      top: 0,
-      left: 200
-    },
-    config: {
-      duration: 3000
-    }
-  });
-
-  const { number } = useSpring({
-    pause: pause,
-    loop: {
-      reverse: true,
-    },
     delay: 2000,
     from: {
-      number: 0
+      scroll: 0
     },
     to: {
-      number: 1000
-    },
-    config: {
-      duration: 3000
+      scroll: 1000
     }
   })
 
   const design = (
     <>
-      <animated.h1
-        style={move}
-        className={'text-9xl txt-red-500'}
+      <animated.div
+        scrollTop={scroll}
+        className={'bg-cyan-500 h-96 overflow-auto'}
       >
-        {number.to((counter) => Math.floor(counter))}
-      </animated.h1>
-      <Button
-        className="mt-96"
-        onClick={() => setPause(!pause)}
-      >Control</Button>
+        <img src="marvel.jpg" alt="marvel-pic" className="w-4/12" />
+        <img src="marvel.jpg" alt="marvel-pic" className="w-4/12" />
+        <img src="marvel.jpg" alt="marvel-pic" className="w-4/12" />
+        <img src="marvel.jpg" alt="marvel-pic" className="w-4/12" />
+        <img src="marvel.jpg" alt="marvel-pic" className="w-4/12" />
+        <img src="marvel.jpg" alt="marvel-pic" className="w-4/12" />
+        <img src="marvel.jpg" alt="marvel-pic" className="w-4/12" />
+      </animated.div>
     </>
   );
   return design;
