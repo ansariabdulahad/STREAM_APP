@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { Expand, IconButton } from "..";
 
 const sample = {
     // position of navbar
@@ -7,9 +8,18 @@ const sample = {
     fixedUp: 'fixed top-0 left-0 w-full animate__animated animate__fadeInDown',
     // for navbar width control
     fixedWidth: 'sm:w-4/5 mx-auto',
+    // dark and light mode for navbar
+    dark: {
+        nav: "bg-slate-900 sm:px-4",
+        link: "text-white py-4 sm:py-6 px-8 sm:px-10 hover:bg-slate-800 hover:text-white"
+    },
+    light: {
+        nav: "bg-gray-100 sm:px-4",
+        link: "text-black py-4 sm:py-6 px-8 sm:px-10 hover:bg-gray-50"
+    },
     // colors for navbar
     primary: {
-        nav: 'bg-indigo-600 sm:px-4',
+        nav: 'bg-indigo-600 sm:px-4 text-white',
         link: 'hover:bg-indigo-500 px-8 sm:px-10 py-4 sm:py-6 hover:text-white'
     },
     secondary: {
@@ -48,9 +58,11 @@ const Navbar = ({
     varient = 'one',
     fixed = false,
     sticky = null,
+    toolbar = null,
     menu
 }) => {
 
+    const [show, setShow] = useState(false);
     const [stickyControl, setStickyControl] = useState(sticky);
 
     // USEEFFECT CODE ON SCROLLING
@@ -96,19 +108,64 @@ const Navbar = ({
                     ${fullWidth ? fullWidth : sample.fixedWidth}
                     `}
                 >
-                    <Link
-                        href={'/'}
-                        className={sample[theme].link}
-                    >{menu.brand}</Link>
-                    <div className="flex flex-col sm:flex-row">
+                    <div className="flex justify-between items-center">
+                        <Link
+                            href={'/'}
+                            className={sample[theme].link}
+                        >{menu.brand}
+                        </Link>
+                        <IconButton
+                            className="sm:hidden"
+                            onClick={() => setShow(!show)}
+                        >menu</IconButton>
+                    </div>
+
+                    <div className="hidden sm:flex flex-col sm:flex-row">
                         {
                             menu.link.map((item, index) => {
                                 return <Menus item={item} key={index} />
                             })
                         }
                     </div>
+                    {
+                        toolbar
+                            ?
+                            <div className="hidden sm:flex gap-3 p-3">
+                                {
+                                    toolbar.map((item, index) => {
+                                        return <div key={index}>{item.label}</div>
+                                    })
+                                }
+                            </div>
+                            : null
+                    }
                 </div>
             </nav>
+
+            <Expand
+                state={show}
+                className="fixed bottom-0 left-0 w-full bg-slate-900 text-white z-50"
+            >
+                <div className="sm:hidden flex flex-col sm:flex-row">
+                    {
+                        menu.link.map((item, index) => {
+                            return <Menus item={item} key={index} />
+                        })
+                    }
+                </div>
+                {
+                    toolbar
+                        ?
+                        <div className="sm:hidden flex gap-3 p-3">
+                            {
+                                toolbar.map((item, index) => {
+                                    return <div key={index}>{item.label}</div>
+                                })
+                            }
+                        </div>
+                        : null
+                }
+            </Expand>
         </>
     );
     return design;

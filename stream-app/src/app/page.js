@@ -5,8 +5,6 @@ import { Button, Card, Expand, Fade, Flip, Icon, IconButton, Navbar, PatternOne,
 
 const Page = () => {
 
-  const [show, setShow] = useState(true)
-
   const menus = {
     brand: 'Just For Code',
     link: [
@@ -15,30 +13,39 @@ const Page = () => {
         href: '/'
       },
       {
-        label: 'Home',
-        href: '/'
+        label: 'About',
+        href: '/about'
       },
       {
-        label: 'Home',
-        href: '/'
+        label: 'Images',
+        href: '/images'
       },
       {
-        label: 'Home',
-        href: '/'
-      },
-      {
-        label: 'Home',
-        href: '/'
+        label: 'Blog',
+        href: '/blog'
       }
     ]
   }
 
+  const toolbars = [
+    {
+      label: <IconButton className="bg-indigo-100 text-indigo-600">home</IconButton>,
+      href: '/'
+    },
+    {
+      label: <IconButton className="bg-indigo-100 text-indigo-600">edit</IconButton>,
+      href: '/'
+    }
+  ]
+
   const design = (
     <>
-      <IconButton size="sm">home</IconButton>
-      <IconButton size="md">delete</IconButton>
-      <IconButton size="lg">login</IconButton>
-      <IconButton size="xl">edit</IconButton>
+      <Navbar
+        menu={menus}
+        varient="three"
+        toolbar={toolbars}
+        theme="dark"
+      />
     </>
   );
   return design;

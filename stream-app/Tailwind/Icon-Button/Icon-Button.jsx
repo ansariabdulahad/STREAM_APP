@@ -42,7 +42,7 @@ const IconButton = ({
     const design = (
         <>
             <button
-                className={`${sample[theme]} ${className} ${btnSize[size]}`}
+                className={`flex justify-center items-center ${sample[theme]} ${className} ${btnSize[size]}`}
                 {...rest}
             >
                 <Icon>{children}</Icon>
