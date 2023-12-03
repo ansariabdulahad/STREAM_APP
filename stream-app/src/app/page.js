@@ -6,33 +6,35 @@ import { Button } from "../../Tailwind";
 
 const Page = () => {
 
-  const { scroll } = useSpring({
-    loop: {
-      reverse: true
-    },
-    delay: 2000,
-    from: {
-      scroll: 0
-    },
-    to: {
-      scroll: 1000
-    }
-  })
+  const [{ x, y }, api] = useSpring(() => ({
+    x: 0,
+    y: 0
+  }));
+
+  const handleSpring = () => {
+    api.start({
+      x: 500,
+      y: 200
+    })
+
+  }
 
   const design = (
     <>
       <animated.div
-        scrollTop={scroll}
-        className={'bg-cyan-500 h-96 overflow-auto'}
+        style={{
+          width: '200px',
+          height: '200px',
+          background: 'red',
+          x: x,
+          y: y
+        }}
       >
-        <img src="marvel.jpg" alt="marvel-pic" className="w-4/12" />
-        <img src="marvel.jpg" alt="marvel-pic" className="w-4/12" />
-        <img src="marvel.jpg" alt="marvel-pic" className="w-4/12" />
-        <img src="marvel.jpg" alt="marvel-pic" className="w-4/12" />
-        <img src="marvel.jpg" alt="marvel-pic" className="w-4/12" />
-        <img src="marvel.jpg" alt="marvel-pic" className="w-4/12" />
-        <img src="marvel.jpg" alt="marvel-pic" className="w-4/12" />
       </animated.div>
+      <Button
+        onClick={handleSpring}
+        theme="secondary"
+        className="mt-96">Move</Button>
     </>
   );
   return design;
