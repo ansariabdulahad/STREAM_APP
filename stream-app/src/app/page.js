@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from "react";
-import { Button, Card, Expand, Fade, Flip, Navbar, Zoom } from "../../Tailwind";
+import { Button, Card, Expand, Fade, Flip, Icon, IconButton, Navbar, PatternOne, PatternTwo, Zoom } from "../../Tailwind";
 
 const Page = () => {
 
@@ -35,32 +35,10 @@ const Page = () => {
 
   const design = (
     <>
-      <Navbar
-        fullWidth={true}
-        theme="warning"
-        varient="three"
-        menu={menus}
-      />
-      <Button
-        theme="error"
-        style={{
-          marginTop: '20px',
-          marginBottom: '10px'
-        }}
-        onClick={() => setShow(!show)}
-      >TOGGLE</Button>
-      <div className="w-5/12">
-        <Flip
-          state={show}
-          className="w-full"
-        >
-          <img
-            src="./marvel.jpg"
-            alt="marvel-img"
-            className="w-full"
-          />
-        </Flip>
-      </div>
+      <IconButton size="sm">home</IconButton>
+      <IconButton size="md">delete</IconButton>
+      <IconButton size="lg">login</IconButton>
+      <IconButton size="xl">edit</IconButton>
     </>
   );
   return design;

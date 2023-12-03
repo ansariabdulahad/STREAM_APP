@@ -27,12 +27,13 @@ const sample = {
 const Button = ({
     children,
     theme = 'primary',
+    className = "",
     ...rest
 }) => {
     const design = (
         <>
             <button
-                className={sample[theme]}
+                className={`${sample[theme]} ${className}`}
                 {...rest}
             >{children}</button>
         </>

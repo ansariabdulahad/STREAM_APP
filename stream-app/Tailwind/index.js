@@ -2,6 +2,9 @@ import Button from "./Button/Button";
 import Card from "./Card/Card";
 import Navbar from "./Navbar/Navbar";
 import { Fade, Zoom, Expand, Flip } from "./Effect/Effect";
+import { PatternOne, PatternTwo } from "./Patterns/Patterns";
+import Icon from "./Icon/Icon";
+import IconButton from "./Icon-Button/Icon-Button";
 
 export {
     Button,
@@ -10,5 +13,9 @@ export {
     Fade,
     Zoom,
     Expand,
-    Flip
+    Flip,
+    PatternOne,
+    PatternTwo,
+    Icon,
+    IconButton
 }
