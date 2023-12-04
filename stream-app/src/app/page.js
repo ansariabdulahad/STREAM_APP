@@ -7,49 +7,27 @@ import { useDrag } from "react-use-gesture";
 
 const Page = () => {
 
-  const [{ width }, api] = useSpring(() => ({
-    width: 0
-  }))
+  const [x, setX] = useState(false);
+  const [i, setI] = useState(0);
 
-  const handleDrag = ({ direction }) => {
-    const left = direction[0];
-    let w = 0;
-
-    if (left > 0) {
-      // swipe left
-      w = 250;
-    }
-    else {
-      // swipe right
-      w = 0;
-    }
-
-    api.start({
-      width: w
-    })
+  const handle = (index) => {
+    return (
+      setX(index === i ? !x : true),
+      setI(index)
+    )
   }
-
-  const drag = useDrag(handleDrag);
 
   const design = (
     <>
-      <div
-        {...drag()}
-        className="flex items-start min-h-screen bg-gray-300"
-      >
-        <animated.div
-          className="min-h-screen bg-white overflow-hidden"
-          style={{
-            width: width
-          }}
-        >
-          <h1 className="text-5xl font-bold">JUST FOR CODE</h1>
-        </animated.div>
-        <div className="flex flex-col gap-5">
-          <h1 className="bg-red-500">MAIN CONTENT</h1>
-          <h1 className="bg-red-500">MAIN CONTENT</h1>
-          <h1 className="bg-red-500">MAIN CONTENT</h1>
-        </div>
+      <div className="flex gap-3">
+        {
+          Array(10).fill(0).map((item, index) => {
+            return <Button
+              onClick={() => handle(index)}
+              className={x && index === i ? 'bg-red-500' : null}
+            >Submit {i}</Button>
+          })
+        }
       </div>
     </>
   );
