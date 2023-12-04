@@ -7,48 +7,50 @@ import { useDrag } from "react-use-gesture";
 
 const Page = () => {
 
-  const handleDrag = ({ offset }) => {
-    const left = offset[0];
-    const top = offset[1];
+  const [{ width }, api] = useSpring(() => ({
+    width: 0
+  }))
+
+  const handleDrag = ({ direction }) => {
+    const left = direction[0];
+    let w = 0;
+
+    if (left > 0) {
+      // swipe left
+      w = 250;
+    }
+    else {
+      // swipe right
+      w = 0;
+    }
+
     api.start({
-      x: left,
-      y: top
-    });
-  }
-
-  const gesture = useDrag(handleDrag);
-
-  const [{ x, y }, api] = useSpring(() => ({
-    x: 0,
-    y: 0
-  }));
-
-  const handleSpring = () => {
-    api.start({
-      x: 500,
-      y: 200
+      width: w
     })
-
   }
+
+  const drag = useDrag(handleDrag);
 
   const design = (
     <>
-      <animated.div
-        {...gesture()}
-        style={{
-          width: '200px',
-          height: '200px',
-          background: 'red',
-          x: x,
-          y: y
-        }}
+      <div
+        {...drag()}
+        className="flex items-start min-h-screen bg-gray-300"
       >
-      </animated.div>
-      <Button
-        {...gesture()}
-        onClick={handleSpring}
-        theme="secondary"
-        className="mt-96">Move</Button>
+        <animated.div
+          className="min-h-screen bg-white overflow-hidden"
+          style={{
+            width: width
+          }}
+        >
+          <h1 className="text-5xl font-bold">JUST FOR CODE</h1>
+        </animated.div>
+        <div className="flex flex-col gap-5">
+          <h1 className="bg-red-500">MAIN CONTENT</h1>
+          <h1 className="bg-red-500">MAIN CONTENT</h1>
+          <h1 className="bg-red-500">MAIN CONTENT</h1>
+        </div>
+      </div>
     </>
   );
   return design;
