@@ -3,20 +3,21 @@ import './Form.css';
 import { ErrorMessage, Field, Form, Formik } from "formik";
 import * as yup from "yup";
 
-const FormDesign = () => {
+const FormDesign = ({
+    children,
+    ...rest
+}) => {
 
     const schema = yup.object({
-        username: yup.string().required('Username is required !').email('Enter a valid email !'),
-        password: yup.string().required('Password is required !')
-    })
+        fullname: yup.string().required('This field is required !'),
+        email: yup.string().required('This field is required !').email('Enter a valid email address !'),
+        password: yup.string().required('This field is required !')
+    });
 
     const defaultValues = {
-        username: '',
+        fullname: '',
+        email: '',
         password: ''
-    };
-
-    const onSubmit = (values) => {
-        console.log(values);
     }
 
     const design = (
@@ -24,30 +25,16 @@ const FormDesign = () => {
             <Formik
                 initialValues={defaultValues}
                 validationSchema={schema}
-                onSubmit={onSubmit}
+                {...rest}
             >
                 {
                     (formik) => {
                         return (
                             <>
-                                <Form className="flex flex-col gap-3 w-4/12 mt-3">
-                                    <Field
-                                        className='border p-3'
-                                        name='username'
-                                        type='email'
-                                        placeholder='Username'
-                                    />
-                                    <ErrorMessage name="username" component={'p'} className="text-red-500" />
-                                    <Field
-                                        className='border p-3'
-                                        name='password'
-                                        type='password'
-                                        placeholder='Password'
-                                    />
-                                    <ErrorMessage name="password" component={'p'} className="text-red-500" />
+                                <Form>
+                                    {children}
                                     <button
-                                        className="p-3 bg-red-500 text-white"
-                                        disabled={!(formik.dirty && formik.isValid)}
+                                        className='p-3 mt-4 bg-red-500 text-white'
                                     >Submit</button>
                                 </Form>
                             </>

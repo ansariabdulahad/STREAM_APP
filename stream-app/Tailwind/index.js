@@ -6,6 +6,7 @@ import { PatternOne, PatternTwo } from "./Patterns/Patterns";
 import Icon from "./Icon/Icon";
 import IconButton from "./Icon-Button/Icon-Button";
 import FormDesign from "./Form/Form";
+import { Input } from "./Form/Fields";
 
 export {
     Button,
@@ -19,5 +20,6 @@ export {
     PatternTwo,
     Icon,
     IconButton,
-    FormDesign
+    FormDesign,
+    Input
 }
