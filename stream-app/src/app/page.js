@@ -13,6 +13,7 @@ const Page = () => {
           <Input name={'fullname'} placeholder='Fullname' />
           <Input name={'email'} type="email" placeholder='Email' />
           <Input name={'password'} type="password" placeholder='Password' />
+          <Input name={'address'} textarea={true} placeholder='address' />
         </div>
       </FormDesign>
     </>
