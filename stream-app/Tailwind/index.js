@@ -5,6 +5,7 @@ import { Fade, Zoom, Expand, Flip } from "./Effect/Effect";
 import { PatternOne, PatternTwo } from "./Patterns/Patterns";
 import Icon from "./Icon/Icon";
 import IconButton from "./Icon-Button/Icon-Button";
+import FormDesign from "./Form/Form";
 
 export {
     Button,
@@ -17,5 +18,6 @@ export {
     PatternOne,
     PatternTwo,
     Icon,
-    IconButton
+    IconButton,
+    FormDesign
 }
