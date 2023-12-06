@@ -1,4 +1,7 @@
+import { useEffect, useState } from "react";
 import { Icon } from "..";
+import { useSprings, animated } from "@react-spring/web";
+import { useGesture } from "react-use-gesture";
 
 export const Carousel = ({
     data,
@@ -8,19 +11,84 @@ export const Carousel = ({
     counting = true
 }) => {
 
-    const Anim = ({ item }) => {
+    const [count, setCount] = useState(0);
+    const [move, setMove] = useState(0);
+
+    // this is used for smooth slide animations
+    const [springs, api] = useSprings(data.length, () => ({
+        x: '0'
+    }));
+
+    useEffect(() => {
+        // this is for auto slied animations
+        const timer = setTimeout(next, 5000);
+        api.start({
+            x: `-${move}%`
+        });
+
+        // cleanup function -- when useEffect is called multiple times then use this function
+        return () => {
+            clearTimeout(timer);
+        }
+    }, [move]);
+
+    const onDragEnd = (e) => {
+        let left = e.direction[0];
+
+        if (left > 0) {
+            prev();
+        }
+        else {
+            next();
+        }
+    }
+
+    const bind = useGesture({
+        onDragEnd: onDragEnd // calling..
+    });
+
+    const prev = () => {
+        if ((count + 1) > 1) {
+            setCount(count - 1);
+            setMove(move - 100);
+        }
+        else {
+            setCount(data.length - 1);
+            setMove(100 * (data.length - 1));
+        }
+    }
+
+    const next = () => {
+        if ((count + 1) < data.length) {
+            setCount(count + 1);
+            setMove(move + 100);
+        }
+        else {
+            setCount(0);
+            setMove(0);
+        }
+    }
+
+    const dotsControl = (index) => {
+        setCount(index);
+        setMove(100 * index);
+    }
+
+    const Anim = ({ styles, index }) => {
         const a = (
-            <div
+            <animated.div
+                {...bind()}
                 style={{
                     width: '100%',
                     height: height,
-                    background: `url(${item.image})`,
+                    background: `url(${data[index].image})`,
                     backgroundSize: 'cover',
-                    backgroundRepeat: 'no-repeat'
+                    backgroundRepeat: 'no-repeat',
+                    ...styles
                 }}
             >
 
-            </div>
+            </animated.div>
         );
         return a;
     }
@@ -35,8 +103,8 @@ export const Carousel = ({
                     }}
                 >
                     {
-                        data.map((item, index) => {
-                            return <Anim key={index} item={item} />
+                        springs.map((styles, index) => {
+                            return <Anim key={index} index={index} styles={styles} />
                         })
                     }
                 </div>
@@ -47,12 +115,12 @@ export const Carousel = ({
                     {
                         counting ?
                             <label className="bg-slate-900 bg-opacity-40 p-2 rounded-full text-white shadow-lg">
-                                1/3
+                                {count + 1}/{data.length}
                             </label> : <label></label>
                     }
                     {
                         arrow ?
-                            <button>
+                            <button onClick={prev}>
                                 <Icon className="text-white shadow-2xl">arrow_back_ios</Icon>
                             </button> : null
                     }
@@ -65,7 +133,7 @@ export const Carousel = ({
                     <label></label>
                     {
                         arrow ?
-                            <button>
+                            <button onClick={next}>
                                 <Icon className="text-white shadow-2xl">arrow_forward_ios</Icon>
                             </button> : null
                     }
@@ -82,14 +150,16 @@ export const Carousel = ({
                                         return (
                                             <>
                                                 <button
+                                                    onClick={() => dotsControl(index)}
                                                     className="rounded-lg shadow-sm"
                                                     style={{
                                                         width: '50px',
                                                         height: '5px',
-                                                        background: 'rgba(255, 255, 255, 0.3)'
+                                                        background: count === index ? 'white' : 'rgba(255, 255, 255, 0.3)',
+                                                        transitionDuration: '0.3s'
                                                     }}
                                                 >
-                                                </button>
+                                                </button >
                                             </>
                                         )
                                     })

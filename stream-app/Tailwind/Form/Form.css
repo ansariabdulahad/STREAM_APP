@@ -1,3 +1,8 @@
 button:disabled {
   background-color: lightgray;
 }
+
+button {
+  transition: ease-in-out;
+  animation-duration: 0.3s;
+}
