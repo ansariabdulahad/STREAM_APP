@@ -115,7 +115,7 @@ const Navbar = ({
                         >{menu.brand}
                         </Link>
                         <IconButton
-                            className="sm:hidden"
+                            className="sm:hidden mx-2"
                             onClick={() => setShow(!show)}
                         >menu</IconButton>
                     </div>

@@ -8,6 +8,7 @@ import IconButton from "./Icon-Button/Icon-Button";
 import FormDesign from "./Form/Form";
 import { Input } from "./Form/Fields";
 import Carousel from "./Animation/Animation";
+import Footer from "./Footer/Footer";
 
 export {
     Button,
@@ -23,5 +24,6 @@ export {
     IconButton,
     FormDesign,
     Input,
-    Carousel
+    Carousel,
+    Footer
 }

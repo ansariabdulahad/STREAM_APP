@@ -2,6 +2,7 @@ import './Form.css';
 
 import { ErrorMessage, Field, Form, Formik } from "formik";
 import * as yup from "yup";
+import { Button } from '..';
 
 const FormDesign = ({
     children,
@@ -10,8 +11,11 @@ const FormDesign = ({
 
     const schema = yup.object({
         fullname: yup.string().required('This field is required !'),
+        name: yup.string().required('This field is required !'),
         email: yup.string().required('This field is required !').email('Enter a valid email address !'),
-        password: yup.string().required('This field is required !')
+        password: yup.string().required('This field is required !'),
+        mobile: yup.string().required('This field is required !'),
+        message: yup.string().required('This field is required !')
     });
 
     const defaultValues = {
@@ -33,9 +37,9 @@ const FormDesign = ({
                             <>
                                 <Form>
                                     {children}
-                                    <button
-                                        className='p-3 mt-4 bg-red-500 text-white'
-                                    >Submit</button>
+                                    <Button
+                                        theme='error'
+                                    >Submit</Button>
                                 </Form>
                             </>
                         )
