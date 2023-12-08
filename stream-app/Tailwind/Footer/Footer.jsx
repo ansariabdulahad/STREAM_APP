@@ -6,7 +6,7 @@ import { IconButton } from "..";
 const Footer = () => {
     const design = (
         <>
-            <div className="flex flex-col sm:flex-row gap-10 sm:gap-0 justify-between bg-slate-900 p-16 mt-16">
+            <div className="flex flex-col sm:flex-row gap-10 sm:gap-0 justify-between bg-slate-900 p-16">
                 <div className="mx-auto">
                     <Logo />
                     <p className="text-gray-300 my-5">

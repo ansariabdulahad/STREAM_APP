@@ -1,3 +1,5 @@
+import Style from './Animation.module.css';
+
 import { useEffect, useState } from "react";
 import { Icon } from "..";
 import { useSprings, animated } from "@react-spring/web";
@@ -84,10 +86,15 @@ export const Carousel = ({
                     background: `url(${data[index].image})`,
                     backgroundSize: 'cover',
                     backgroundRepeat: 'no-repeat',
+                    backgroundPosition: 'center',
                     ...styles
                 }}
             >
-
+                <div className={`flex items-center h-full ${Style['caption-bg']}`}>
+                    <div className="w-full p-8 sm:p-16">
+                        {data[index].caption}
+                    </div>
+                </div>
             </animated.div>
         );
         return a;

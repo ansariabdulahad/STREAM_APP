@@ -2,7 +2,7 @@ import Logo from "../Logo/Logo";
 
 const { Navbar, IconButton, Footer } = require("../../Tailwind")
 
-const Template = () => {
+const Template = ({ children }) => {
     // Constants
     const menus = {
         brand: <Logo />,
@@ -45,6 +45,9 @@ const Template = () => {
                 toolbar={toolbars}
                 varient="three"
             />
+            <div>
+                {children}
+            </div>
             <Footer />
         </>
     );
