@@ -7,7 +7,7 @@ import Icon from "./Icon/Icon";
 import IconButton from "./Icon-Button/Icon-Button";
 import FormDesign from "./Form/Form";
 import { Input } from "./Form/Fields";
-import Carousel from "./Animation/Animation";
+import { Carousel, Slider } from "./Animation/Animation";
 import Footer from "./Footer/Footer";
 
 export {
@@ -25,5 +25,6 @@ export {
     FormDesign,
     Input,
     Carousel,
+    Slider,
     Footer
 }
