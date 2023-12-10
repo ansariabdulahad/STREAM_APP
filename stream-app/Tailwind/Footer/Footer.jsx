@@ -16,10 +16,10 @@ const Footer = () => {
                     </p>
                     <div className="flex items-center gap-3">
                         <button className="bg-slate-800 py-2 rounded-md px-5">
-                            <Image src={'/google-play.png'} width={150} height={48} />
+                            <Image src={'/google-play.png'} alt="google-pic" width={150} height={48} />
                         </button>
                         <button className="py-2 rounded-md px-5">
-                            <Image src={'/app-store.png'} width={190} height={60} />
+                            <Image src={'/app-store.png'} alt="app-pic" width={190} height={60} />
                         </button>
                     </div>
                 </div>

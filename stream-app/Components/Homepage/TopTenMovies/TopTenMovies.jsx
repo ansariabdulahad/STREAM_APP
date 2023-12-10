@@ -84,6 +84,7 @@ const TopTenMovies = () => {
                         className="text-white text-3xl mb-4"
                     >TOP TEN MOVIES</h1>
                     <div
+                        className="relative"
                         style={{
                             width: 330,
                             height: 516
