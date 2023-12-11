@@ -1,6 +1,10 @@
+import { useSelector } from "react-redux";
 import { Slider } from "../../../Tailwind";
 
 const TopTenMovies = () => {
+
+    const { AnimationReducer } = useSelector(response => response);
+    const { image } = AnimationReducer;
 
     const data = [
         {
@@ -71,7 +75,8 @@ const TopTenMovies = () => {
                 className="rounded-lg shadow-lg shadow-slate-900"
                 style={{
                     height: 600,
-                    background: `url(sanddust2.jpg) center center no-repeat`,
+                    transition: '0.5s ease',
+                    background: `url(${image ? image : 'sanddust2.jpg'}) center center no-repeat`,
                     backgroundSize: 'cover',
                 }}
             >

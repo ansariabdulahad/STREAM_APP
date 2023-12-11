@@ -5,6 +5,7 @@ import { Button, Icon } from "..";
 import { useSprings, animated } from "@react-spring/web";
 import { useDrag, useGesture } from "react-use-gesture";
 import useMeasure from 'react-use-measure';
+import { useDispatch } from 'react-redux';
 
 export const Carousel = ({
     data,
@@ -180,6 +181,8 @@ export const Carousel = ({
 
 export const Slider = ({ data, verticle = false }) => {
 
+    const dispatch = useDispatch();
+
     const [springs, api] = useSprings(data.length, () => ({
         x: 0,
         y: 0
@@ -233,6 +236,14 @@ export const Slider = ({ data, verticle = false }) => {
         }
     }
 
+    const view = (index) => {
+        let payload = data[index];
+        dispatch({
+            type: 'PREVIEW_IMAGE',
+            payload: payload
+        })
+    }
+
     useEffect(() => {
         api.start({
             x: verticle ? null : -move,
@@ -243,6 +254,7 @@ export const Slider = ({ data, verticle = false }) => {
     const Anim = ({ styles, index }) => {
         const anim = (
             <animated.div
+                onClick={verticle ? () => view(index) : null}
                 {...bind()}
                 ref={image}
                 className={`shadow-md shadow-slate-900 rounded-lg ${Style['no-select']}`}
