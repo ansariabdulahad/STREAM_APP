@@ -216,7 +216,7 @@ export const Slider = ({ data, verticle = false }) => {
             verticle ?
                 setMove(move + imageBound.height)
                 :
-                setMove(move + mainBound.width);
+                setMove(move + imageBound.width);
         }
         else {
             return null;
@@ -229,7 +229,7 @@ export const Slider = ({ data, verticle = false }) => {
             verticle ?
                 setMove(move - imageBound.height)
                 :
-                setMove(move - mainBound.width);
+                setMove(move - imageBound.width);
         }
         else {
             return null;
