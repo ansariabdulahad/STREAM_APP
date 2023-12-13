@@ -2,6 +2,15 @@
 
 import 'video.js/dist/video-js.css';
 
+// city
+// import '@videojs/themes/dist/city/index.css';
+// fantasy
+import '@videojs/themes/dist/fantasy/index.css';
+// forest
+// import '@videojs/themes/dist/forest/index.css';
+// sea
+// import '@videojs/themes/dist/sea/index.css';
+
 import videojs from "video.js";
 import { useEffect, useRef } from 'react';
 import { Button } from '../../Tailwind';
@@ -49,18 +58,10 @@ const VideoPlayer = () => {
 
     const design = (
         <>
-            <div className='w-6/12'>
+            <div className='w-9/12'>
                 <video
                     ref={video}
-                    className='video-js vjs-big-play-centered'
-                />
-                <Button
-                    onClick={(update)}
-                    className='py-5 m-3'
-                >Next Video</Button>
-                <input
-                    type='file'
-                    onChange={uploadAndPlay}
+                    className='video-js vjs-big-play-centered vjs-theme-fantasy'
                 />
             </div>
         </>

@@ -11,6 +11,7 @@
   "dependencies": {
     "@headlessui/react": "^1.7.17",
     "@react-spring/web": "^9.7.3",
+    "@videojs/themes": "^1.0.1",
     "animate.css": "^4.1.1",
     "formik": "^2.4.5",
     "material-icons": "^1.13.12",
