@@ -14,7 +14,31 @@ export const Input = ({
                 type={type}
                 as={textarea ? 'textarea' : null}
             />
-            <ErrorMessage name={name} component={'p'} className="text-red-500" />
+            <ErrorMessage name={name} component={'p'} className="text-red-500 text-sm font-bold p-0 m-0" />
+        </>
+    );
+    return design;
+}
+
+export const Select = ({ name, data, ...rest }) => {
+    const design = (
+        <>
+            <Field
+                {...rest}
+                name={name}
+                as="select"
+            >
+                {
+                    data.map((item, index) => {
+                        return <option value={item.value} key={index}>{item.label}</option>
+                    })
+                }
+            </Field>
+            <ErrorMessage
+                name={name}
+                component="p"
+                className="text-red-500 text-sm font-bold p-0 m-0"
+            />
         </>
     );
     return design;
