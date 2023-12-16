@@ -1,15 +1,20 @@
 'use client'
 
 import 'video.js/dist/video-js.css';
-
-// city
-// import '@videojs/themes/dist/city/index.css';
+import 'videojs-seek-buttons/dist/videojs-seek-buttons.css';
 // fantasy
 import '@videojs/themes/dist/fantasy/index.css';
+// city
+// import '@videojs/themes/dist/city/index.css';
 // forest
 // import '@videojs/themes/dist/forest/index.css';
 // sea
 // import '@videojs/themes/dist/sea/index.css';
+
+import 'videojs-contrib-quality-levels';
+import 'jb-videojs-hls-quality-selector';
+import 'videojs-seek-buttons';
+import 'videojs-hotkeys';
 
 import videojs from "video.js";
 import { useEffect, useRef } from 'react';
@@ -24,8 +29,8 @@ const VideoPlayer = () => {
         controls: true,
         sources: [
             {
-                src: '/demo.mp4',
-                type: 'video/mp4'
+                src: '/todays/index.m3u8',
+                type: 'application/x-mpegURL'
             }
         ],
         fluid: true,
@@ -33,8 +38,32 @@ const VideoPlayer = () => {
         autoplay: true
     }
 
+    const onReady = (v_player) => {
+        // FOR FORWARD AND BACKWARD FUNCTIONALITY ONLY
+        // v_player.seekButtons({
+        //     forward: 30,
+        //     back: 10
+        // }); // -- NOT WORKING PROPERLY --
+
+        // FOR QUALITY FUNCTIONALITY ONLY
+        v_player.hlsQualitySelector({
+            displayCurrentQuality: true,
+        });
+
+        // FOR KEYBOARD BUTTON FUNCTIONALITY ONLY
+        v_player.hotkeys({
+            allwayesCaptureHotKeys: true,
+            seekStep: 5,
+            enableValumeScroll: true
+        });
+    }
+
     useEffect(() => {
-        player.current = videojs(video.current, options);
+        player.current = videojs(
+            video.current,
+            options,
+            () => onReady(player.current)
+        );
     }, []);
 
     const update = () => {
