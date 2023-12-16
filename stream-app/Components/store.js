@@ -5,12 +5,14 @@ import logger from "redux-logger";
 import { thunk } from "redux-thunk";
 
 import AnimationReducer from "../Tailwind/Animation/Animation.reducer";
+import DialogReducer from "../Tailwind/Dialog/Dialog.reducer";
 
 const middlewares = applyMiddleware(logger, thunk);
 
 const root = combineReducers({
     // reducers...
-    AnimationReducer
+    AnimationReducer,
+    DialogReducer
 });
 
 const store = createStore(root, {}, middlewares);

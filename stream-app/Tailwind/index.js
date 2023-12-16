@@ -9,6 +9,7 @@ import FormDesign from "./Form/Form";
 import { Input } from "./Form/Fields";
 import { Carousel, Slider } from "./Animation/Animation";
 import Footer from "./Footer/Footer";
+import Dialog from "./Dialog/Dialog";
 
 export {
     Button,
@@ -26,5 +27,6 @@ export {
     Input,
     Carousel,
     Slider,
-    Footer
+    Footer,
+    Dialog
 }

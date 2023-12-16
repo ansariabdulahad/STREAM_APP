@@ -8,21 +8,25 @@ const ContactForm = () => {
                     <Input
                         name='name'
                         placeholder='Name'
+                        className='bg-gray-100 p-3 rounded-sm'
                     />
                     <Input
                         name='email'
                         type="email"
                         placeholder='Email'
+                        className='bg-gray-100 p-3 rounded-sm'
                     />
                     <Input
                         name='mobile'
                         type="tel"
                         placeholder='Mobile'
+                        className='bg-gray-100 p-3 rounded-sm'
                     />
                     <Input
                         name='message'
                         placeholder='Message...'
                         textarea
+                        className='bg-gray-100 p-3 rounded-sm'
                     />
                 </div>
             </FormDesign>

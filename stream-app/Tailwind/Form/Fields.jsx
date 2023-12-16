@@ -13,7 +13,6 @@ export const Input = ({
                 name={name}
                 type={type}
                 as={textarea ? 'textarea' : null}
-                className="border p-2 rounded-sm"
             />
             <ErrorMessage name={name} component={'p'} className="text-red-500" />
         </>
