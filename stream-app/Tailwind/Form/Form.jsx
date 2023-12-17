@@ -2,14 +2,9 @@ import './Form.css';
 
 import { ErrorMessage, Field, Form, Formik } from "formik";
 import * as yup from "yup";
-import { Button } from '..';
+import { Button, Input, Select, UploadInput } from '..';
 
-const FormDesign = ({
-    children,
-    className = "",
-    fields,
-    ...rest
-}) => {
+const FormDesign = ({ fields, grid = 1, gap = 4 }) => {
 
     const schema = {
         fullname: yup.string().required('This field is required !'),
@@ -31,26 +26,32 @@ const FormDesign = ({
     const defaultValues = {};
     const validation = {};
 
-    fields.map((item, index) => {
-        return (
-            defaultValues[item] = "",
-            validation[item] = schema[item]
-        );
-    });
+    const Fields = () => {
+        const allFields = fields.map((item, index) => {
+            const { component, props } = item;
+
+            switch (component) {
+                case 'input': return <Input {...props} key={index} />
+                case 'upload': return <UploadInput {...props} key={index} />
+                case 'select': return <Select {...props} key={index} />
+                default: return null;
+            }
+        });
+
+        return allFields;
+    }
 
     const design = (
         <>
-            <Formik
-                initialValues={defaultValues}
-                validationSchema={yup.object(validation)}
-                {...rest}
-            >
+            <Formik>
                 {
                     (formik) => {
                         return (
                             <>
-                                <Form className={className}>
-                                    {children}
+                                <Form className={`grid gap-${gap}`}>
+                                    <div className={`grid grid-cols-${grid} gap-${gap}`}>
+                                        <Fields />
+                                    </div>
                                     <Button
                                         theme='error'
                                         type='submit'

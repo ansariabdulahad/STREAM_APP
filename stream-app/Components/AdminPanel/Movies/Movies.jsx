@@ -1,121 +1,113 @@
 'use client';
 
-import { Dialog, FormDesign, Input, Select } from "../../../Tailwind";
+import { Dialog, FormDesign } from "../../../Tailwind";
 
 const Movies = () => {
 
-    const data = [
+    const options = [
         {
-            label: 'Choose category',
-            value: 'choose category'
-        },
-        {
-            label: 'Comedy',
-            value: 'comedy'
+            label: 'Choose a category',
+            value: 'choose a category'
         },
         {
             label: 'Drama',
             value: 'drama'
         },
         {
-            label: 'Fantasy',
-            value: 'fantasy'
-        },
-        {
             label: 'Action',
             value: 'action'
+        },
+        {
+            label: 'Comedy',
+            value: 'comedy'
         }
     ]
-    const fields = ['title', 'desc', 'duration', 'staring', 'thumbnail', 'movie', 'category', 'tags'];
-    const fileObject = {
-        thumbnail: '',
-        movie: ''
-    }
 
-    const onSubmit = (values) => {
-        console.log(values);
-    }
-
-    const handleUpload = (e) => {
-        const input = e.target;
-        const file = input.files[0];
-        const key = input.name;
-
-        fileObject[key] = file;
-        console.log(fileObject);
-    }
+    const fields = [
+        {
+            component: 'input',
+            props: {
+                name: 'title',
+                placeholder: 'Title',
+                className: 'col-span-2 bg-gray-100 rounded-sm shadow-md border-0 p-3'
+            }
+        },
+        {
+            component: 'input',
+            props: {
+                name: 'desc',
+                placeholder: 'Video Description',
+                textarea: true,
+                className: 'col-span-2 bg-gray-100 rounded-sm shadow-md border-0 p-3'
+            }
+        },
+        {
+            component: 'input',
+            props: {
+                name: 'duration',
+                placeholder: 'Video Duration',
+                className: 'bg-gray-100 rounded-sm shadow-md border-0 p-3'
+            }
+        },
+        {
+            component: 'input',
+            props: {
+                name: 'staring',
+                placeholder: 'Actors Name',
+                className: 'bg-gray-100 rounded-sm shadow-md border-0 p-3'
+            }
+        },
+        {
+            component: 'upload',
+            props: {
+                name: 'thumbnail',
+                className: 'bg-gray-100 rounded-sm shadow-md border-0 p-3',
+                label: 'Thumbnail'
+            }
+        },
+        {
+            component: 'upload',
+            props: {
+                name: 'video',
+                className: 'bg-gray-100 rounded-sm shadow-md border-0 p-3',
+                label: 'Video'
+            }
+        },
+        {
+            component: 'select',
+            props: {
+                name: 'category',
+                className: 'bg-gray-100 rounded-sm shadow-md border-0 p-3',
+                data: options
+            }
+        },
+        {
+            component: 'input',
+            props: {
+                name: 'tags',
+                placeholder: 'Keywords',
+                textarea: true,
+                className: 'col-span-2 bg-gray-100 rounded-sm shadow-md border-0 p-3'
+            }
+        }
+    ]
 
     const MovieForm = () => {
         const form = (
-            <FormDesign
-                className="text-left"
-                onSubmit={onSubmit}
-                fields={fields}
-            >
-                <div className="flex gap-4 flex-col py-4">
-                    <Input
-                        name={'title'}
-                        placeholder='Title'
-                        className='bg-gray-100 p-3 rounded-sm'
-                    />
-                    <Input
-                        name={'desc'}
-                        placeholder="Description"
-                        textarea
-                        className='bg-gray-100 p-3 rounded-sm'
-                    />
-                    <Input
-                        name={'staring'}
-                        placeholder="Staring"
-                        className='bg-gray-100 p-3 rounded-sm'
-                    />
-                    <Input
-                        name={'duration'}
-                        placeholder="Duration"
-                        className='bg-gray-100 p-3 rounded-sm'
-                    />
-                    <div className="flex flex-col">
-                        <label className="font-bold text-sm mb-1">Thumbnail</label>
-                        <Input
-                            name={'thumbnail'}
-                            type="file"
-                            accept="image/*"
-                            className='bg-gray-100 p-3 rounded-sm'
-                            onChange={handleUpload}
-                        />
-                    </div>
-                    <div className="flex flex-col">
-                        <label className="font-bold text-sm mb-1">Video File</label>
-                        <Input
-                            name={'movie'}
-                            type="file"
-                            accept='.mp4'
-                            className='bg-gray-100 p-3 rounded-sm'
-                            onChange={handleUpload}
-                        />
-                    </div>
-                    <Select
-                        name='category'
-                        data={data}
-                        className='bg-gray-100 p-3 rounded-sm'
-                    />
-                    <Input
-                        name={'tags'}
-                        textarea
-                        placeholder="Tags"
-                        className='bg-gray-100 p-3 rounded-sm'
-                    />
-                </div>
-            </FormDesign>
+            <>
+                <h1 className="text-xl font-bold text-left mb-3">Add New Video</h1>
+                <FormDesign
+                    fields={fields}
+                    gap={5}
+                />
+            </>
         );
         return form;
     }
 
     const design = (
         <>
-            <Dialog
-                title={'Add Movie'}
-            >
+            <Dialog>
                 <MovieForm />
             </Dialog>
         </>
