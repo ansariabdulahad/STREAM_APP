@@ -1,13 +1,30 @@
 import { ErrorMessage, Field } from "formik";
 
-export const UploadInput = ({ label = null, ...rest }) => {
+export const UploadInput = ({
+    label = null,
+    formik,
+    ...rest
+}) => {
+
+    const handleFile = (e) => {
+        let name = e.target.name;
+        let multiple = e.target.multiple;
+        let files = multiple ? e.target.files : e.target.files[0];
+
+        formik.setFieldValue(name, files); // set field value using formik
+    }
+
     const design = (
-        <div className="flex flex-col">
+        <div className={`flex flex-col col-span-${rest.width}`}>
             {
                 label ? <label className="text-left text-sm font-bold mb-2">{label}</label> : null
             }
-            <Field type='file' {...rest} />
-            <ErrorMessage name={rest.name} component={'p'} className="text-red-500 text-sm font-bold p-0 m-0" />
+            <input
+                onChange={handleFile}
+                type='file'
+                {...rest}
+            />
+            <ErrorMessage name={rest.name} component={'p'} className="text-red-500 text-left mt-2 text-sm font-bold p-0" />
         </div>
     );
     return design;
@@ -22,7 +39,7 @@ export const Input = ({
 }) => {
     const design = (
         <>
-            <div className="flex flex-col">
+            <div className={`flex flex-col col-span-${rest.width}`}>
                 {
                     label ? <label className="text-left text-sm font-bold mb-2">{label}</label> : null
                 }
@@ -32,7 +49,7 @@ export const Input = ({
                     as={textarea ? 'textarea' : null}
                     {...rest}
                 />
-                <ErrorMessage name={name} component={'p'} className="text-red-500 text-sm font-bold p-0 m-0" />
+                <ErrorMessage name={name} component={'p'} className="text-red-500 text-left mt-2 text-sm font-bold p-0" />
             </div>
         </>
     );
@@ -42,7 +59,7 @@ export const Input = ({
 export const Select = ({ name, data, label, ...rest }) => {
     const design = (
         <>
-            <div className="flex flex-col">
+            <div className={`flex flex-col col-span-${rest.width}`}>
                 {
                     label ? <label className="text-left text-sm font-bold mb-2">{label}</label> : null
                 }
@@ -60,7 +77,7 @@ export const Select = ({ name, data, label, ...rest }) => {
                 <ErrorMessage
                     name={name}
                     component="p"
-                    className="text-red-500 text-sm font-bold p-0 m-0"
+                    className="text-red-500 text-sm font-bold p-0 text-left mt-2"
                 />
             </div>
         </>

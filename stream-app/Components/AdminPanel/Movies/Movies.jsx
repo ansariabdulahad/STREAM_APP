@@ -29,7 +29,8 @@ const Movies = () => {
             props: {
                 name: 'title',
                 placeholder: 'Title',
-                className: 'col-span-2 bg-gray-100 rounded-sm shadow-md border-0 p-3'
+                className: 'bg-gray-100 rounded-sm shadow-md border-0 p-3',
+                width: "full"
             }
         },
         {
@@ -38,7 +39,8 @@ const Movies = () => {
                 name: 'desc',
                 placeholder: 'Video Description',
                 textarea: true,
-                className: 'col-span-2 bg-gray-100 rounded-sm shadow-md border-0 p-3'
+                className: 'bg-gray-100 rounded-sm shadow-md border-0 p-3',
+                width: "full"
             }
         },
         {
@@ -62,7 +64,8 @@ const Movies = () => {
             props: {
                 name: 'thumbnail',
                 className: 'bg-gray-100 rounded-sm shadow-md border-0 p-3',
-                label: 'Thumbnail'
+                label: 'Thumbnail',
+                accept: 'image/*'
             }
         },
         {
@@ -70,7 +73,9 @@ const Movies = () => {
             props: {
                 name: 'video',
                 className: 'bg-gray-100 rounded-sm shadow-md border-0 p-3',
-                label: 'Video'
+                label: 'Video',
+                accept: '.mp4',
+                multiple: true
             }
         },
         {
@@ -78,7 +83,8 @@ const Movies = () => {
             props: {
                 name: 'category',
                 className: 'bg-gray-100 rounded-sm shadow-md border-0 p-3',
-                data: options
+                data: options,
+                width: "full"
             }
         },
         {
@@ -87,18 +93,24 @@ const Movies = () => {
                 name: 'tags',
                 placeholder: 'Keywords',
                 textarea: true,
-                className: 'col-span-2 bg-gray-100 rounded-sm shadow-md border-0 p-3'
+                className: 'bg-gray-100 rounded-sm shadow-md border-0 p-3',
+                width: "full"
             }
         }
     ]
+
+    const onSubmit = (values) => {
+        console.log(values);
+    }
 
     const MovieForm = () => {
         const form = (
             <>
                 <h1 className="text-xl font-bold text-left mb-3">Add New Video</h1>
                 <FormDesign
+                    onSubmit={onSubmit}
                     fields={fields}
-                    gap={5}
+                    grid={2}
                 />
             </>
         );

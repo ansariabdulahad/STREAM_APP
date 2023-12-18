@@ -4,7 +4,7 @@ import { ErrorMessage, Field, Form, Formik } from "formik";
 import * as yup from "yup";
 import { Button, Input, Select, UploadInput } from '..';
 
-const FormDesign = ({ fields, grid = 1, gap = 4 }) => {
+const FormDesign = ({ fields, grid = 1, gap = 4, ...rest }) => {
 
     const schema = {
         fullname: yup.string().required('This field is required !'),
@@ -18,7 +18,7 @@ const FormDesign = ({ fields, grid = 1, gap = 4 }) => {
         duration: yup.string().required('This field is required !'),
         staring: yup.string().required('This field is required !'),
         thumbnail: yup.string().required('This field is required !'),
-        movie: yup.string().required('This field is required !'),
+        video: yup.string().required('This field is required !'),
         category: yup.string().required('This field is required !'),
         tags: yup.string().required('This field is required !')
     };
@@ -26,13 +26,13 @@ const FormDesign = ({ fields, grid = 1, gap = 4 }) => {
     const defaultValues = {};
     const validation = {};
 
-    const Fields = () => {
+    const Fields = ({ formik }) => {
         const allFields = fields.map((item, index) => {
             const { component, props } = item;
 
             switch (component) {
                 case 'input': return <Input {...props} key={index} />
-                case 'upload': return <UploadInput {...props} key={index} />
+                case 'upload': return <UploadInput {...props} formik={formik} key={index} />
                 case 'select': return <Select {...props} key={index} />
                 default: return null;
             }
@@ -41,22 +41,37 @@ const FormDesign = ({ fields, grid = 1, gap = 4 }) => {
         return allFields;
     }
 
+    // MAP FUNCTION ON FILEDS TO GET NAME VALUES
+    fields.map((item, index) => {
+        const { props } = item;
+        const { name } = props;
+
+        defaultValues[name] = "";
+        validation[name] = schema[name];
+    })
+
     const design = (
         <>
-            <Formik>
+            <Formik
+                {...rest}
+                initialValues={defaultValues}
+                validationSchema={yup.object(validation)}
+            >
                 {
                     (formik) => {
                         return (
                             <>
                                 <Form className={`grid gap-${gap}`}>
                                     <div className={`grid grid-cols-${grid} gap-${gap}`}>
-                                        <Fields />
+                                        <Fields
+                                            formik={formik}
+                                        />
                                     </div>
                                     <Button
                                         theme='error'
                                         type='submit'
                                     >Submit</Button>
-                                </Form>
+                                </Form >
                             </>
                         )
                     }
