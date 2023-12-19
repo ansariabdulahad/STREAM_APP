@@ -29,8 +29,8 @@ const VideoPlayer = () => {
         controls: true,
         sources: [
             {
-                src: '/todays/index.m3u8',
-                type: 'application/x-mpegURL'
+                src: 'https://dq6r1956vc1pq.cloudfront.net/hls/test.mpd',
+                type: 'application/dash+xml' // application/x-mpegURL for .m3u8 extension and application/dash+xml for .mpd extension
             }
         ],
         fluid: true,
