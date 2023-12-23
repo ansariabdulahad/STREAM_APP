@@ -16,6 +16,8 @@
     "formik": "^2.4.5",
     "jb-videojs-hls-quality-selector": "^2.0.2",
     "material-icons": "^1.13.12",
+    "mongodb": "^6.3.0",
+    "mongoose": "^8.0.3",
     "next": "14.0.2",
     "react": "^18",
     "react-bootstrap-sweetalert": "^5.2.0",

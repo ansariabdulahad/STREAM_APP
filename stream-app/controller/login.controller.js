@@ -1,45 +1,87 @@
-export const fetch = (request) => {
-    return {
-        message: "FETCH request",
-        status: 200
+import '../module/db.module';
+import { loginMiddleware } from "../middleware/login.middleware"
+import loginSchema from '../schema/login.schema';
+
+export const fetch = async (request) => {
+    try {
+        await loginMiddleware(request);
+        return {
+            data: {
+                message: "Login Success"
+            },
+            status: 200
+        }
+    } catch (error) {
+        return {
+            data: {
+                message: "Login Error !",
+                error: error
+            },
+            status: 401
+        }
     }
 }
 
 export const fetchById = async (request, params) => {
     return {
-        message: "FETCH BY ID Request",
+        data: {
+            message: "FETCH BY ID Request",
+            data: params
+        },
         status: 200
     }
 }
 
 export const create = async (request) => {
-    const data = await request.json();
-    return {
-        data: data,
-        status: 200
+    try {
+        const data = await request.json();
+        console.log(data);
+        const userRes = await new loginSchema(data).save();
+        return {
+            data: {
+                message: "Login Data Initialized",
+                data: userRes
+            },
+            status: 200
+        }
+    } catch (error) {
+        return {
+            data: {
+                message: "Failed to Initialize Login Data",
+                error: error
+            },
+            status: 424
+        }
     }
 }
 
 export const trash = async (request) => {
     return {
-        message: 'Login Delete Request',
+        data: {
+            message: 'Login Delete Request',
+        },
         status: 200
     }
 }
 
 export const trashById = async (request, params) => {
     return {
-        message: "DELETE BY ID REQUEST",
+        data: {
+            message: "DELETE BY ID REQUEST",
+            data: params
+        },
         status: 200
     }
 }
 
-export const update = async (request) => {
+export const update = async (request, params) => {
     const data = await request.json();
 
     return {
-        message: "Login data update request",
-        data: data,
+        data: {
+            message: "Login data update request",
+            data: data
+        },
         status: 200
     }
 }
