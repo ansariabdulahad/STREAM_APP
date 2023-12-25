@@ -1,9 +1,15 @@
 'use client';
 
+import { useDispatch, useSelector } from "react-redux";
 import { Dialog, FormDesign } from "../../../Tailwind";
 import { useS3 } from "../../../hooks/use.s3";
+import { create } from "./Movies.action";
+import { useEffect } from "react";
 
 const Movies = () => {
+
+    const dispatch = useDispatch();
+    const MoviesReducer = useSelector(response => response.MoviesReducer);
 
     const options = [
         {
@@ -99,6 +105,51 @@ const Movies = () => {
         }
     ]
 
+    useEffect(() => {
+        if (MoviesReducer.success) {
+            dispatch({
+                type: 'CLOSE_DIALOG'
+            });
+        }
+    }, [MoviesReducer]);
+
+    const upload = async (fileProps, values) => {
+
+        const log = [];
+
+        for (let data of fileProps) {
+            const upload = useS3(values[data.name], data.key);
+
+            const uploading = await upload();
+
+            uploading.on('httpUploadProgress', (e) => {
+                let loaded = e.loaded;
+                let total = e.total;
+                let perc = Math.floor((loaded * 100) / total);
+
+                console.log(perc + '%');
+            });
+
+            try {
+                const file = await uploading.promise();
+
+                data['success'] = true;
+                data['s3'] = file;
+
+                log.push(data);
+
+            } catch (error) {
+
+                data['success'] = false;
+                data['error'] = error;
+
+                log.push(data);
+            }
+        }
+
+        return log;
+    }
+
     const onSubmit = async (values) => {
         // FOR SINGLE FILE UPLOAD FUNCTION
         // const upload = useS3({
@@ -118,26 +169,13 @@ const Movies = () => {
             }
         ];
 
+        const log = await upload(fileProps, values);
+
         for (let data of fileProps) {
-            const upload = useS3(values[data.name], data.key);
-
-            const uploading = await upload();
-
-            uploading.on('httpUploadProgress', (e) => {
-                let loaded = e.loaded;
-                let total = e.total;
-                let perc = Math.floor((loaded * 100) / total);
-
-                console.log(perc + '%');
-            });
-
-            try {
-                const file = await uploading.promise();
-                console.log(file);
-            } catch (error) {
-                console.log(error);
-            }
+            values[data.name] = data.key;
         }
+
+        dispatch(create(values));
     }
 
     const MovieForm = () => {
