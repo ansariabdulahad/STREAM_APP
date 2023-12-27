@@ -3,7 +3,7 @@
 import { useDispatch, useSelector } from "react-redux";
 import { Dialog, FormDesign } from "../../../Tailwind";
 import { useS3 } from "../../../hooks/use.s3";
-import { create } from "./Movies.action";
+import { createStreaming } from "./Movies.action";
 import { useEffect } from "react";
 
 const Movies = () => {
@@ -157,15 +157,18 @@ const Movies = () => {
         //     video: values.video
         // });
 
+        let videoName = values.video.name;
+        let folder = videoName.split('.')[0];
+
         // FOR MULTIPLE FILE UPLOAD FUNCTIONS
         const fileProps = [
             {
                 name: 'thumbnail',
-                key: 'demo/thumb.png'
+                key: `original/${folder}/${folder}.png`
             },
             {
                 name: 'video',
-                key: 'demo/video.mp4'
+                key: `original/${folder}/${videoName}`
             }
         ];
 
@@ -175,7 +178,7 @@ const Movies = () => {
             values[data.name] = data.key;
         }
 
-        dispatch(create(values));
+        dispatch(createStreaming(values));
     }
 
     const MovieForm = () => {

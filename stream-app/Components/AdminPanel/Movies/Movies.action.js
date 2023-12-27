@@ -1,14 +1,17 @@
 import axios from "axios";
 import { MOVIES_FAILED, MOVIES_REQUEST, MOVIES_SUCCESS } from "./Movies.state"
 
-export const create = (data) => {
+export const createStreaming = (data) => {
     return async (dispatch) => {
         try {
             dispatch({ type: MOVIES_REQUEST });
 
             const response = await axios({
                 method: 'POST',
-                url: '/api/s3'
+                url: '/api/media-convert',
+                data: {
+                    key: data.video
+                }
             });
 
             dispatch({
