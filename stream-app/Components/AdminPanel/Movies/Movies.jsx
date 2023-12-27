@@ -3,7 +3,7 @@
 import { useDispatch, useSelector } from "react-redux";
 import { Dialog, FormDesign } from "../../../Tailwind";
 import { useS3 } from "../../../hooks/use.s3";
-import { createStreaming } from "./Movies.action";
+import { createJob } from "./Movies.action";
 import { useEffect } from "react";
 
 const Movies = () => {
@@ -106,7 +106,7 @@ const Movies = () => {
     ]
 
     useEffect(() => {
-        if (MoviesReducer.success) {
+        if (MoviesReducer.job_success) {
             dispatch({
                 type: 'CLOSE_DIALOG'
             });
@@ -178,7 +178,7 @@ const Movies = () => {
             values[data.name] = data.key;
         }
 
-        dispatch(createStreaming(values));
+        dispatch(createJob(values));
     }
 
     const MovieForm = () => {

@@ -8,5 +8,6 @@ export const GET = async (request) => {
 
 export const POST = async (request) => {
     const response = await create(request);
-    return NextResponse.json({ response }, { status: response.status });
+    const { data, status } = response;
+    return NextResponse.json({ data }, { status });
 }
