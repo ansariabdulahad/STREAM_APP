@@ -199,7 +199,7 @@ const Movies = () => {
                                 Thumbnail - {progress.thumbnail + "%"}
                             </label>
                             <div className="bg-gray-200 h-1.5">
-                                <div className="bg-red-500 h-full"
+                                <div className="bg-green-500 h-full"
                                     style={{
                                         width: progress.thumbnail + "%"
                                     }}
@@ -212,7 +212,7 @@ const Movies = () => {
                                 Video - {progress.video + "%"}
                             </label>
                             <div className="bg-gray-200 h-1.5">
-                                <div className="bg-red-500 h-full"
+                                <div className="bg-green-500 h-full"
                                     style={{
                                         width: progress.video + "%"
                                     }}
@@ -223,7 +223,7 @@ const Movies = () => {
                         <div>
                             <label className="font-bold mb-1 text-sm">Job</label>
                             <div className="bg-gray-200 h-1.5 overflow-hidden">
-                                <div className={`bg-red-500 w-0 h-full 
+                                <div className={`bg-green-500 w-0 h-full 
                                 ${MoviesReducer.job_loading ? 'infinite' : null}
                                 ${MoviesReducer.job_success ? 'w-full' : null}
                                 `}>
@@ -233,7 +233,7 @@ const Movies = () => {
                         <div>
                             <label className="font-bold mb-1 text-sm">Finalizing</label>
                             <div className="bg-gray-200 h-1.5 overflow-hidden">
-                                <div className={`bg-red-500 w-0 h-full  
+                                <div className={`bg-green-500 w-0 h-full  
                                 ${MoviesReducer.movie_loading ? 'infinite' : null}
                                 ${MoviesReducer.movie_success ? 'w-full' : null}
                                 `}>
@@ -255,6 +255,7 @@ const Movies = () => {
                     onSubmit={onSubmit}
                     fields={fields}
                     grid={2}
+                    disabled={submit}
                 />
             </>
         );

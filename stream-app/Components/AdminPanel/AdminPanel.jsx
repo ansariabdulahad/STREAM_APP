@@ -1,15 +1,30 @@
 'use client';
 
 import { useEffect, useState } from "react";
-import { IconButton } from "../../Tailwind";
+import { Button, IconButton } from "../../Tailwind";
 import Logo from "../Logo/Logo";
 import { useDispatch } from "react-redux";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 const AdminPanel = ({ children }) => {
 
     const [sidebar, setSidebar] = useState(null);
     const [section, setSection] = useState(null);
     const [open, setOpen] = useState(true);
+
+    const pathname = usePathname();
+
+    const menus = [
+        {
+            label: 'Movies',
+            href: '/admin-panel/movies'
+        },
+        {
+            label: 'Media Jobs',
+            href: '/admin-panel/jobs'
+        }
+    ]
 
     const dispatch = useDispatch();
 
@@ -28,11 +43,26 @@ const AdminPanel = ({ children }) => {
         }
     }, [open]);
 
+    const Menu = ({ item }) => {
+        const m = (
+            <div>
+                <Button theme="t-primary">
+                    <Link href={item.href} className="text-black">{item.label}</Link>
+                </Button>
+            </div>
+        );
+        return m;
+    }
+
     const design = (
         <>
             <div className="min-h-screen flex">
                 <div className={`bg-white shadow-2xl overflow-x-hidden ${sidebar}`}>
-                    Sidebarkjasdiashfd sfohqsufhqwus afquashfbcwuqs dcasfy asfbasudcsabc
+                    {
+                        menus.map((item, index) => {
+                            return <Menu key={index} item={item} />
+                        })
+                    }
                 </div>
                 <div className={`bg-slate-800 ${section}`}>
                     <nav className="px-5 py-3 bg-gray-100 flex justify-between items-center">
@@ -43,13 +73,17 @@ const AdminPanel = ({ children }) => {
                                 size="sm"
                                 theme="t-secondary"
                             >format_align_right</IconButton>
-                            <IconButton
-                                onClick={() => dispatch({
-                                    type: 'OPEN_DIALOG'
-                                })}
-                                size="sm"
-                                theme="secondary"
-                            >add</IconButton>
+                            {
+                                pathname === '/admin-panel/movies'
+                                    ? <IconButton
+                                        onClick={() => dispatch({
+                                            type: 'OPEN_DIALOG'
+                                        })}
+                                        size="sm"
+                                        theme="secondary"
+                                    >add</IconButton>
+                                    : null
+                            }
                         </div>
                     </nav>
                     <div className="p-5">

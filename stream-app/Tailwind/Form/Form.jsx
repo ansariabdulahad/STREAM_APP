@@ -4,7 +4,7 @@ import { ErrorMessage, Field, Form, Formik } from "formik";
 import * as yup from "yup";
 import { Button, Input, Select, UploadInput } from '..';
 
-const FormDesign = ({ fields, grid = 1, gap = 4, ...rest }) => {
+const FormDesign = ({ fields, grid = 1, gap = 4, disabled = false, ...rest }) => {
 
     const schema = {
         fullname: yup.string().required('This field is required !'),
@@ -70,6 +70,7 @@ const FormDesign = ({ fields, grid = 1, gap = 4, ...rest }) => {
                                     <Button
                                         theme='error'
                                         type='submit'
+                                        disabled={disabled}
                                     >Submit</Button>
                                 </Form >
                             </>
