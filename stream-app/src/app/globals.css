@@ -25,3 +25,19 @@
     )
     rgb(var(--background-start-rgb));
 } */
+
+/* FOR PROGRESS BAR APPLIED ON JOB AND FINALIZING */
+.infinite {
+  width: 50%;
+  position: relative;
+  animation: move 1s linear infinite;
+}
+
+@keyframes move {
+  from {
+    left: -100%;
+  }
+  to {
+    left: 100%;
+  }
+}

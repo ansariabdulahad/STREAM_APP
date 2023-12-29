@@ -3,8 +3,8 @@ import mongoose, { Schema } from "mongoose";
 const movieSchema = new Schema({
     title: String,
     desc: String,
-    duration: String,
-    staring: String, // actorsName tell sir to do staring...
+    duration: Number,
+    actorsName: String,
     thumbnail: String,
     video: String,
     category: String,

@@ -1,13 +1,19 @@
 'use client';
 
 import { useDispatch, useSelector } from "react-redux";
-import { Dialog, FormDesign } from "../../../Tailwind";
+import { Card, Dialog, FormDesign } from "../../../Tailwind";
 import { useS3 } from "../../../hooks/use.s3";
 import { createJob } from "./Movies.action";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 const Movies = () => {
 
+    const [submit, setSubmit] = useState(false);
+    const [filename, setFilename] = useState(null);
+    const [progress, setProgress] = useState({
+        thumbnail: 0,
+        video: 0
+    });
     const dispatch = useDispatch();
     const MoviesReducer = useSelector(response => response.MoviesReducer);
 
@@ -31,41 +37,6 @@ const Movies = () => {
     ]
 
     const fields = [
-        {
-            component: 'input',
-            props: {
-                name: 'title',
-                placeholder: 'Title',
-                className: 'bg-gray-100 rounded-sm shadow-md border-0 p-3',
-                width: "full"
-            }
-        },
-        {
-            component: 'input',
-            props: {
-                name: 'desc',
-                placeholder: 'Video Description',
-                textarea: true,
-                className: 'bg-gray-100 rounded-sm shadow-md border-0 p-3',
-                width: "full"
-            }
-        },
-        {
-            component: 'input',
-            props: {
-                name: 'duration',
-                placeholder: 'Video Duration',
-                className: 'bg-gray-100 rounded-sm shadow-md border-0 p-3'
-            }
-        },
-        {
-            component: 'input',
-            props: {
-                name: 'staring',
-                placeholder: 'Actors Name',
-                className: 'bg-gray-100 rounded-sm shadow-md border-0 p-3'
-            }
-        },
         {
             component: 'upload',
             props: {
@@ -96,6 +67,24 @@ const Movies = () => {
         {
             component: 'input',
             props: {
+                name: 'desc',
+                placeholder: 'Video Description',
+                textarea: true,
+                className: 'bg-gray-100 rounded-sm shadow-md border-0 p-3',
+                width: "full"
+            }
+        },
+        {
+            component: 'input',
+            props: {
+                name: 'actorsName',
+                placeholder: 'Actors Name',
+                className: 'bg-gray-100 rounded-sm shadow-md border-0 p-3'
+            }
+        },
+        {
+            component: 'input',
+            props: {
                 name: 'tags',
                 placeholder: 'Keywords',
                 textarea: true,
@@ -106,10 +95,8 @@ const Movies = () => {
     ]
 
     useEffect(() => {
-        if (MoviesReducer.job_success) {
-            dispatch({
-                type: 'CLOSE_DIALOG'
-            });
+        if (MoviesReducer.movie_success) {
+            setSubmit(false);
         }
     }, [MoviesReducer]);
 
@@ -127,7 +114,12 @@ const Movies = () => {
                 let total = e.total;
                 let perc = Math.floor((loaded * 100) / total);
 
-                console.log(perc + '%');
+                setProgress((oldData) => {
+                    return {
+                        ...oldData,
+                        [data.name]: perc
+                    }
+                })
             });
 
             try {
@@ -150,12 +142,28 @@ const Movies = () => {
         return log;
     }
 
+    const getVideoDuration = async (file) => {
+        return new Promise((resolve, reject) => {
+            const url = URL.createObjectURL(file);
+            let video = document.createElement('video');
+            video.src = url;
+            video.preload = 'metadata';
+            video.onloadedmetadata = () => resolve(video.duration);
+        });
+    }
+
     const onSubmit = async (values) => {
         // FOR SINGLE FILE UPLOAD FUNCTION
         // const upload = useS3({
         //     thumbnail: values.thumbnail,
         //     video: values.video
         // });
+        dispatch({ type: 'CLOSE_DIALOG' });
+        setSubmit(true);
+
+        values.title = values.video.name.toLowerCase().split('.')[0];
+        setFilename(values.title);
+        values.duration = await getVideoDuration(values.video);
 
         let videoName = values.video.name;
         let folder = videoName.split('.')[0];
@@ -181,6 +189,64 @@ const Movies = () => {
         dispatch(createJob(values));
     }
 
+    const Steps = () => {
+        const step = (
+            <>
+                <Card title={filename}>
+                    <div className="grid grid-cols-4 gap-2">
+                        <div>
+                            <label className="font-bold mb-1 text-sm">
+                                Thumbnail - {progress.thumbnail + "%"}
+                            </label>
+                            <div className="bg-gray-200 h-1.5">
+                                <div className="bg-red-500 h-full"
+                                    style={{
+                                        width: progress.thumbnail + "%"
+                                    }}
+                                >
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <label className="font-bold mb-1 text-sm">
+                                Video - {progress.video + "%"}
+                            </label>
+                            <div className="bg-gray-200 h-1.5">
+                                <div className="bg-red-500 h-full"
+                                    style={{
+                                        width: progress.video + "%"
+                                    }}
+                                >
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <label className="font-bold mb-1 text-sm">Job</label>
+                            <div className="bg-gray-200 h-1.5 overflow-hidden">
+                                <div className={`bg-red-500 w-0 h-full 
+                                ${MoviesReducer.job_loading ? 'infinite' : null}
+                                ${MoviesReducer.job_success ? 'w-full' : null}
+                                `}>
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <label className="font-bold mb-1 text-sm">Finalizing</label>
+                            <div className="bg-gray-200 h-1.5 overflow-hidden">
+                                <div className={`bg-red-500 w-0 h-full  
+                                ${MoviesReducer.movie_loading ? 'infinite' : null}
+                                ${MoviesReducer.movie_success ? 'w-full' : null}
+                                `}>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </Card>
+            </>
+        );
+        return step;
+    }
+
     const MovieForm = () => {
         const form = (
             <>
@@ -197,6 +263,9 @@ const Movies = () => {
 
     const design = (
         <>
+            {
+                submit ? <Steps /> : null
+            }
             <Dialog>
                 <MovieForm />
             </Dialog>
