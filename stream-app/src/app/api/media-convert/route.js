@@ -3,7 +3,8 @@ import { create, fetch } from "../../../../controller/media-convert.controller";
 
 export const GET = async (request) => {
     const response = await fetch(request);
-    return NextResponse.json({ response }, { status: response.status });
+    const { data, status } = response;
+    return NextResponse.json({ data }, { status });
 }
 
 export const POST = async (request) => {

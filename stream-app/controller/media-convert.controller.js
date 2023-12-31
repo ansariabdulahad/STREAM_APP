@@ -10,8 +10,12 @@ const media = new AWS.MediaConvert({
 
 export const fetch = async (request) => {
 
+    const url = new URL(request.url);
+    const token = url.searchParams.get('token');
+
     const params = {
         // MaxResults: 2
+        NextToken: token
     }
 
     try {
