@@ -5,10 +5,12 @@ import { Button } from "../../../Tailwind";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import Loader from "../../Loader/Loader";
+import moment from "moment";
 
 const Jobs = () => {
 
     const [token, setToken] = useState("");
+    const [deleting, setDeleting] = useState(false);
 
     const columns = [
         "JobId",
@@ -33,20 +35,25 @@ const Jobs = () => {
     }
 
     // USE SWR TO GET DATA BEFORE COMPONENT LOADS
-    const { data, error } = useSWR(`/api/media-convert?token=${token}`, getData);
+    const { data, error } = useSWR(`/api/media-convert?token=${token}`, getData, { refreshInterval: 5000 }); // refresh interval is set to automatically refresh every 3 seconds.
 
-    useEffect(() => {
-        console.log(data, error)
-    }, [data, error]);
+    const cancle = async (id) => {
+        setDeleting(true);
+
+        await axios({
+            method: 'DELETE',
+            url: '/api/media-convert/' + id
+        });
+    }
 
     const Tr = ({ item, index }) => {
 
         const input = item.Settings.Inputs[0].FileInput.split('/');
-        const dateObj = new Date(item.CreatedAt);
-        let dd = dateObj.getDate();
-        let mm = dateObj.getMonth() + 1;
-        let yy = dateObj.getFullYear();
-        let liveDate = dd <= 10 ? "0" + dd + "-" + "0" + mm + "-" + yy : dd + "-" + mm + "-" + yy;
+        // const dateObj = new Date(item.CreatedAt);
+        // let dd = dateObj.getDate();
+        // let mm = dateObj.getMonth() + 1;
+        // let yy = dateObj.getFullYear();
+        // let liveDate = dd <= 10 ? "0" + dd + "-" + "0" + mm + "-" + yy : dd + "-" + mm + "-" + yy;
 
         const tr = (
             <tr className={`bg-gray-300 
@@ -54,7 +61,11 @@ const Jobs = () => {
             `}>
                 <td style={{ verticalAlign: "middle" }}>{item.Id}</td>
                 <td style={{ verticalAlign: "middle" }}>{input[input.length - 1]}</td>
-                <td style={{ verticalAlign: "middle" }}>{liveDate}</td>
+                <td style={{ verticalAlign: "middle" }}>
+                    {
+                        moment(item.CreatedAt).format('MMMM Do YYYY, h:mm:ss a')
+                    }
+                </td>
                 <td style={{ verticalAlign: "middle" }}>{item.Status}</td>
                 <td style={{ verticalAlign: "middle" }}>
                     {
@@ -71,12 +82,13 @@ const Jobs = () => {
                 <td>
                     {
                         item.Status === "PROGRESSING"
-                            ?
-                            <div className="flex">
-                                <Button className="mr-2" theme="success">Refresh</Button>
-                                <Button theme="error">Cancle</Button>
-                            </div>
-                            : <Button theme="warning">Delete</Button>
+                            ? deleting
+                                ? <i className="fa fa-spinner fa-spin" style={{ fontSize: "30px" }}></i>
+                                : <Button
+                                    theme="error"
+                                    onClick={() => cancle(item.Id)}
+                                >Cancle</Button>
+                            : null
                     }
                 </td>
             </tr>
@@ -98,27 +110,29 @@ const Jobs = () => {
                     Next
                 </Button>
             </div>
-            <table className="table shadow-lg text-center table-striped text-white">
-                <thead>
-                    <tr>
+            <div className="table-responsive">
+                <table className="table shadow-lg text-center table-striped text-white">
+                    <thead>
+                        <tr>
+                            {
+                                // Object.keys(table[0])
+                                columns.map((key, index) => {
+                                    return <th key={index}>{key}</th>
+                                })
+                            }
+                        </tr>
+                    </thead>
+                    <tbody>
                         {
-                            // Object.keys(table[0])
-                            columns.map((key, index) => {
-                                return <th key={index}>{key}</th>
+                            data && data.Jobs && data.Jobs.map((item, index) => {
+                                return <Tr key={index} item={item} index={index + 1} />
                             })
                         }
-                    </tr>
-                </thead>
-                <tbody>
-                    {
-                        data && data.Jobs && data.Jobs.map((item, index) => {
-                            return <Tr key={index} item={item} index={index + 1} />
-                        })
-                    }
-                </tbody>
-            </table>
+                    </tbody>
+                </table>
+            </div>
             {
-                data && data.Jobs ? null : <Loader />
+                data && data.Jobs || error ? null : <Loader />
             }
         </>
     );

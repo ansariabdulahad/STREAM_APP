@@ -2,6 +2,7 @@ import { Inter } from 'next/font/google';
 import './globals.css';
 import 'animate.css';
 import 'material-icons/iconfont/material-icons.css';
+import 'font-awesome/css/font-awesome.min.css';
 import AuthProvider from '../../Components/AuthProvider/AuthProvider';
 
 const inter = Inter({ subsets: ['latin'] })

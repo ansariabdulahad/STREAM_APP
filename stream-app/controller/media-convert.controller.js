@@ -41,6 +41,27 @@ export const fetch = async (request) => {
     // }
 }
 
+export const fetchById = async (request, param) => {
+    try {
+        const { id } = param;
+
+        let params = {
+            Id: id
+        }
+
+        const job = await media.getJob(params).promise();
+        return {
+            data: job,
+            status: 200
+        }
+    } catch (error) {
+        return {
+            data: error,
+            status: 424
+        }
+    }
+}
+
 export const create = async (request) => {
 
     try {
@@ -67,4 +88,19 @@ export const create = async (request) => {
     //     },
     //     status: 200
     // }
+}
+
+export const cancle = async (request, param) => {
+    const { id } = param;
+
+    let params = {
+        Id: id
+    }
+
+    const job = await media.cancelJob(params).promise();
+
+    return {
+        data: job,
+        status: 200
+    }
 }
