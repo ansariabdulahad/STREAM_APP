@@ -1,15 +1,18 @@
 'use client';
 
 import { useDispatch, useSelector } from "react-redux";
-import { Card, Dialog, FormDesign } from "../../../Tailwind";
+import { Card, Dialog, FormDesign, IconButton } from "../../../Tailwind";
 import { useS3 } from "../../../hooks/use.s3";
 import { createJob } from "./Movies.action";
 import { useEffect, useState } from "react";
+import useSWR from "swr";
+import axios from "axios";
 
 const Movies = () => {
 
     const [submit, setSubmit] = useState(false);
     const [filename, setFilename] = useState(null);
+    const [isLoader, setIsLoader] = useState(false);
     const [progress, setProgress] = useState({
         thumbnail: 0,
         video: 0
@@ -189,6 +192,76 @@ const Movies = () => {
         dispatch(createJob(values));
     }
 
+    const getData = async (url) => {
+        try {
+            const response = await axios({
+                method: 'GET',
+                url: url
+            });
+
+            return response.data.data;
+
+        } catch (error) {
+            return error.response.data;
+        }
+    }
+
+    const { data, error } = useSWR('/api/movies', getData, { refreshInterval: 5000 });
+
+    useEffect(() => {
+        console.log(data, error);
+    }, [data, error]);
+
+    const deleteMe = async (id) => {
+        setIsLoader(true);
+        // TODO: SHOW LOADER WHEN YOUER MONGODB WILL WORK // DELETE FUNCTION 
+        await axios({
+            method: 'DELETE',
+            url: `/api/movies/${id}`
+        });
+
+        setIsLoader(false);
+    }
+
+    const openDialog = () => {
+        dispatch({
+            type: 'OPEN_DIALOG'
+        })
+    }
+
+    const MovieList = ({ item }) => {
+        const list = (
+            <>
+                <Card>
+                    <img src="/a.jpg" width={'100%'} alt="thumbnail" />
+                    <h1 className="font-bold capitalize">
+                        {item.title}
+                    </h1>
+                    <p>{item.desc}</p>
+                    <p>{item.category}</p>
+                    <p>{item.keywords}</p>
+                    <div className="flex items-center gap-2 mt-3">
+                        <IconButton
+                            onClick={openDialog}
+                            size="sm"
+                            theme="secondary"
+                        >
+                            edit
+                        </IconButton>
+                        <IconButton
+                            onClick={() => deleteMe(item._id)}
+                            size="sm"
+                            theme="error"
+                        >
+                            delete
+                        </IconButton>
+                    </div>
+                </Card>
+            </>
+        );
+        return list;
+    }
+
     const Steps = () => {
         const step = (
             <>
@@ -267,6 +340,13 @@ const Movies = () => {
             {
                 submit ? <Steps /> : null
             }
+            <div className="grid sm:grid-cols-4 gap-4">
+                {
+                    data && data.map((item, index) => {
+                        return <MovieList key={index} item={item} />
+                    })
+                }
+            </div>
             <Dialog>
                 <MovieForm />
             </Dialog>
