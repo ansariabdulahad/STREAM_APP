@@ -1,4 +1,7 @@
+import Link from "next/link";
 import { Icon } from "..";
+import { Transition } from "@headlessui/react";
+import { useState } from "react";
 
 const btnSize = {
     sm: "w-10 h-10 rounded-full",
@@ -37,16 +40,74 @@ const IconButton = ({
     theme = 'primary',
     className = "",
     size = 'md',
+    dropdown = false,
+    dropdownMenu = [],
+    onClick = null,
     ...rest
 }) => {
+
+    const [toggle, setToggle] = useState(false);
+
+    const Menu = ({ item }) => {
+        return (
+            <>
+                <>
+                    <Link href={item.href}>
+                        <button
+                            className="flex items-center gap-3 text-black pl-3 w-full py-2 capitalize 
+                        hover:bg-red-500 hover:text-white
+                        ">
+                            <Icon>{item.icon}</Icon>
+                            {item.label}
+                        </button>
+                    </Link>
+                </>
+            </>
+        );
+    }
+
+    // DROP DOWN MENU
+    const Dropdown = () => {
+        return (
+            <>
+                <>
+                    <Transition show={toggle}>
+                        <div
+                            style={{
+                                marginTop: '63px',
+                                minWidth: '180px'
+                            }}
+                            className="absolute top-0 right-0 z-50 bg-white 
+                            py-3 px-0 flex flex-col
+                            ">
+                            {
+                                dropdownMenu.map((item, index) => {
+                                    return <Menu key={index} item={item} />
+                                })
+                            }
+                        </div>
+                    </Transition>
+                </>
+            </>
+        );
+    }
+
     const design = (
         <>
-            <button
-                className={`flex justify-center items-center ${sample[theme]} ${className} ${btnSize[size]}`}
-                {...rest}
-            >
-                <Icon>{children}</Icon>
-            </button>
+            <>
+                <button
+                    {...rest}
+                    onClick={dropdown ? () => setToggle(!toggle) : onClick}
+                    className={`sm:relative flex justify-center items-center ${sample[theme]} ${className} ${btnSize[size]}`}
+                >
+                    <Icon>{children}</Icon>
+                    {
+                        dropdown
+                            ? <Dropdown />
+                            : null
+                    }
+                </button>
+            </>
         </>
     );
     return design;

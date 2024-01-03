@@ -1,14 +1,20 @@
-import { Button } from "../../Tailwind";
+"use client"
+import Style from './Loader.module.css';
 
 const Loader = () => {
     const design = (
         <>
-            <Button
-                theme="error"
-                className="m-4"
-            >
-                Loading...
-            </Button>
+            <>
+                <div className={Style.loader}>
+                    <i
+                        className="fa fa-spinner fa-spin"
+                        style={{
+                            fontSize: '50px',
+                            color: "white"
+                        }}
+                    ></i>
+                </div>
+            </>
         </>
     );
     return design;

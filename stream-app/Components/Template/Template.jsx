@@ -26,12 +26,31 @@ const Template = ({ children }) => {
         ]
     }
 
-    const toolbars = [
+    // DROP DOWN MENU
+    const dMenu = [
         {
-            label: <IconButton theme="error" size="sm" className="bg-inherit">search</IconButton>
+            label: 'Register',
+            href: '/register',
+            icon: 'person'
         },
         {
-            label: <IconButton theme="error" size="sm">person</IconButton>
+            label: 'Login',
+            href: '/login',
+            icon: 'login'
+        }
+    ]
+
+    const toolbars = [
+        {
+            label: <IconButton theme="primary" size="sm" className="bg-inherit">search</IconButton>
+        },
+        {
+            label: <IconButton
+                dropdown
+                dropdownMenu={dMenu}
+                theme="error"
+                size="sm"
+            >person</IconButton>
         }
     ]
 

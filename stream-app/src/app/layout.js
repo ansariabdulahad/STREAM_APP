@@ -4,6 +4,8 @@ import 'animate.css';
 import 'material-icons/iconfont/material-icons.css';
 import 'font-awesome/css/font-awesome.min.css';
 import AuthProvider from '../../Components/AuthProvider/AuthProvider';
+import { Suspense } from 'react';
+import Loading from './loading';
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -17,7 +19,9 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <body suppressHydrationWarning={true} className={inter.className}>
         <AuthProvider>
-          {children}
+          <Suspense fallback={<Loading />}>
+            {children}
+          </Suspense>
         </AuthProvider>
       </body>
     </html>
