@@ -2,6 +2,7 @@ import Link from "next/link";
 import { Icon } from "..";
 import { Transition } from "@headlessui/react";
 import { useState } from "react";
+import { signOut } from "next-auth/react";
 
 const btnSize = {
     sm: "w-10 h-10 rounded-full",
@@ -52,15 +53,27 @@ const IconButton = ({
         return (
             <>
                 <>
-                    <Link href={item.href}>
-                        <button
-                            className="flex items-center gap-3 text-black pl-3 w-full py-2 capitalize 
-                        hover:bg-red-500 hover:text-white
-                        ">
-                            <Icon>{item.icon}</Icon>
-                            {item.label}
-                        </button>
-                    </Link>
+                    {
+                        item.logout
+                            ? <button
+                                onClick={() => signOut()}
+                                className="flex items-center gap-3 text-black pl-3 w-full py-2 capitalize 
+                                hover:bg-red-500 hover:text-white
+                                ">
+                                <Icon>{item.icon}</Icon>
+                                {item.label}
+                            </button>
+                            : <Link href={item.href}>
+                                <button
+                                    className="flex items-center gap-3 text-black pl-3 w-full py-2 capitalize 
+                                    hover:bg-red-500 hover:text-white
+                                    ">
+                                    <Icon>{item.icon}</Icon>
+                                    {item.label}
+                                </button>
+                            </Link>
+                    }
+
                 </>
             </>
         );
@@ -75,7 +88,7 @@ const IconButton = ({
                         <div
                             style={{
                                 marginTop: '63px',
-                                minWidth: '180px'
+                                minWidth: '200px',
                             }}
                             className="absolute top-0 right-0 z-50 bg-white 
                             py-3 px-0 flex flex-col

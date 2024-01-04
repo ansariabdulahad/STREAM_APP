@@ -1,8 +1,12 @@
+import { useSession } from "next-auth/react";
 import Logo from "../Logo/Logo";
 
 const { Navbar, IconButton, Footer } = require("../../Tailwind")
 
 const Template = ({ children }) => {
+
+    const { data, status } = useSession();
+
     // Constants
     const menus = {
         brand: <Logo />,
@@ -27,7 +31,7 @@ const Template = ({ children }) => {
     }
 
     // DROP DOWN MENU
-    const dMenu = [
+    const beforeLogin = [
         {
             label: 'Register',
             href: '/register',
@@ -40,6 +44,20 @@ const Template = ({ children }) => {
         }
     ]
 
+    const afterLogin = [
+        {
+            label: data && data.user.name,
+            href: '/register',
+            icon: 'person'
+        },
+        {
+            label: 'Logout',
+            href: '/api/auth/signout',
+            icon: 'logout',
+            logout: true
+        }
+    ]
+
     const toolbars = [
         {
             label: <IconButton theme="primary" size="sm" className="bg-inherit">search</IconButton>
@@ -47,10 +65,16 @@ const Template = ({ children }) => {
         {
             label: <IconButton
                 dropdown
-                dropdownMenu={dMenu}
+                dropdownMenu={status && status === 'authenticated' ? afterLogin : beforeLogin}
                 theme="error"
                 size="sm"
-            >person</IconButton>
+            >
+                {
+                    status && status === 'authenticated'
+                        ? <img src={data && data.user.image} alt="user_img" className="rounded-full" />
+                        : "person"
+                }
+            </IconButton>
         }
     ]
 
