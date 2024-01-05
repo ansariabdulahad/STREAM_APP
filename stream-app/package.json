@@ -15,6 +15,7 @@
     "animate.css": "^4.1.1",
     "aws-sdk": "^2.1525.0",
     "axios": "^1.6.2",
+    "bcrypt": "^5.1.1",
     "font-awesome": "^4.7.0",
     "formik": "^2.4.5",
     "jb-videojs-hls-quality-selector": "^2.0.2",
