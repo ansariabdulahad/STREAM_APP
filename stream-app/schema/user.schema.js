@@ -1,5 +1,6 @@
 import mongoose, { Schema, model } from "mongoose";
 import bcrypt, { hash } from 'bcrypt';
+import { encrypt } from "../module/bcrypt.module";
 
 const userSchema = new Schema({
     name: {
@@ -23,7 +24,7 @@ const userSchema = new Schema({
 
 // MONGOOSE MIDDLEWARE
 userSchema.pre('save', async function (next) {
-    this.password = await bcrypt.hash(this.password, 12);
+    this.password = await encrypt(this.password); // bcrypt.hash(this.password.toString(), 12);
     next();
 })
 

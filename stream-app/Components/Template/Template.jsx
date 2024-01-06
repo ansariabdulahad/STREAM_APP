@@ -71,7 +71,15 @@ const Template = ({ children }) => {
             >
                 {
                     status && status === 'authenticated'
-                        ? <img src={data && data.user.image} alt="user_img" className="rounded-full" />
+                        ? <img
+                            src={
+                                data && data.user.image
+                                    ? data.user.image
+                                    : "https://img.freepik.com/free-psd/3d-illustration-person-with-sunglasses_23-2149436188.jpg?size=626&ext=jpg&ga=GA1.1.119067988.1704461192&semt=ais"
+                            }
+                            alt="user_img"
+                            className="rounded-full"
+                        />
                         : "person"
                 }
             </IconButton>

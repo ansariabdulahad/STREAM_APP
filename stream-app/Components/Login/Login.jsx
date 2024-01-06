@@ -45,7 +45,7 @@ const Login = () => {
     ]
 
     const onSubmit = async (values) => {
-        const { ok } = await signIn('credentials', { redirect: false });
+        const { ok } = await signIn('credentials', { ...values, redirect: false });
 
         if (ok) {
             redirect('/');
@@ -69,7 +69,11 @@ const Login = () => {
                                 <div className='flex flex-col gap-4'>
                                     {
                                         error
-                                            ? <Card className={'bg-red-500 text-white font-bold'}>
+                                            ? <Card
+                                                style={{
+                                                    backgroundColor: 'red'
+                                                }}
+                                                className={'text-white font-bold'}>
                                                 <h1>
                                                     Sign in failed. Check the details you provided are correct!
                                                 </h1>

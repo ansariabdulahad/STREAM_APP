@@ -3,6 +3,9 @@ import GoogleProvider from "next-auth/providers/google";
 import FacebookProvider from "next-auth/providers/facebook";
 import GitHubProvider from "next-auth/providers/github";
 import CredentialsProvider from "next-auth/providers/credentials";
+import axios from "axios";
+
+const { NEXT_PUBLIC_ENDPOINT, NEXT_PUBLIC_NEXT_AUTH_SECRET } = process.env;
 
 const handler = NextAuth({
     providers: [
@@ -21,12 +24,19 @@ const handler = NextAuth({
                 }
             },
             async authorize(credentials, req) {
-                return {
-                    name: 'Ahad',
-                    email: 'ahad@gmail.com',
-                    image: 'https://img.freepik.com/free-psd/3d-illustration-person-with-sunglasses_23-2149436188.jpg?size=626&ext=jpg'
+                const { email, password } = credentials;
+
+                try {
+                    const response = await axios({
+                        method: 'GET',
+                        url: `${NEXT_PUBLIC_ENDPOINT}/api/user?email=${email}&password=${password}`
+                    });
+
+                    return response.data.data.user;
+
+                } catch (error) {
+                    return null;
                 }
-                // return null
             }
         }),
         GoogleProvider({
@@ -42,6 +52,7 @@ const handler = NextAuth({
             clientSecret: process.env.NEXT_PUBLIC_GITHUB_SECRET
         })
     ],
+    secret: NEXT_PUBLIC_NEXT_AUTH_SECRET,
     session: {
         jwt: true
     }
