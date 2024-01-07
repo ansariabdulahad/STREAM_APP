@@ -53,6 +53,9 @@ const handler = NextAuth({
         })
     ],
     secret: NEXT_PUBLIC_NEXT_AUTH_SECRET,
+    pages: {
+        signIn: '/login'
+    },
     session: {
         jwt: true
     }

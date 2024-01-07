@@ -6,6 +6,7 @@ import Loader from '../Loader/Loader';
 import Style from './Login.module.css';
 import { signIn, useSession } from 'next-auth/react';
 import { useState } from 'react';
+import Link from 'next/link';
 
 const Login = () => {
 
@@ -80,10 +81,14 @@ const Login = () => {
                                             </Card>
                                             : null
                                     }
+                                    <h1 className='text-2xl font-bold'>Login</h1>
                                     <FormDesign
                                         fields={fields}
                                         onSubmit={onSubmit}
                                     />
+                                    <Link href={'/register'} className='text-blue-500 text-end'>
+                                        Visit Register Page !
+                                    </Link>
                                     <hr />
                                     <Button
                                         onClick={() => signIn('google')}
