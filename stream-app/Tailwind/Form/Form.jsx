@@ -20,7 +20,9 @@ const FormDesign = ({ fields, grid = 1, gap = 4, disabled = false, ...rest }) =>
         thumbnail: yup.string().required('This field is required !'),
         video: yup.string().required('This field is required !'),
         category: yup.string().required('This field is required !'),
-        tags: yup.string().required('This field is required !')
+        tags: yup.string().required('This field is required !'),
+        amount: yup.string().required('This field is required !'),
+        emi: yup.string().required('This field is required !')
     };
 
     const defaultValues = {};

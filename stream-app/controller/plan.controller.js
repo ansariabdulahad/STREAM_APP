@@ -1,46 +1,21 @@
 import '../module/db.module';
-import moviesSchema from '../schema/movies.schema';
+import planSchema from '../schema/plan.schema';
 
 export const fetch = async (request) => {
     try {
-        const movies = await moviesSchema.find();
+        const plan = await planSchema.find();
 
-        if (movies.length > 0) {
+        if (plan.length > 0) {
             return {
-                data: movies,
+                data: plan,
                 status: 200
             }
         }
         else {
             return {
-                data: "No Data Found",
-                status: 404
-            }
-        }
-
-    } catch (error) {
-        return {
-            data: error,
-            status: 424
-        }
-    }
-}
-
-export const fetchById = async (request, params) => {
-    try {
-        const { id } = params;
-
-        const movie = await moviesSchema.findById(id);
-
-        if (movie) {
-            return {
-                data: movie,
-                status: 200
-            }
-        }
-        else {
-            return {
-                data: "No Data Found",
+                data: {
+                    message: "NO DATA FOUND"
+                },
                 status: 404
             }
         }
@@ -56,10 +31,38 @@ export const fetchById = async (request, params) => {
 export const create = async (request) => {
     try {
         const data = await request.json();
-        const response = await new moviesSchema(data).save();
+        const plan = await new planSchema(data).save();
+
         return {
-            data: response,
+            data: plan,
             status: 200
+        }
+    } catch (error) {
+        return {
+            data: error,
+            status: 424
+        }
+    }
+}
+
+export const fetchById = async (request, params) => {
+    try {
+        const { id } = params;
+        const plan = await planSchema.findById(id);
+
+        if (plan) {
+            return {
+                data: plan,
+                status: 200
+            }
+        }
+        else {
+            return {
+                data: {
+                    message: 'NO DATA FOUND'
+                },
+                status: 404
+            }
         }
     } catch (error) {
         return {
@@ -72,17 +75,15 @@ export const create = async (request) => {
 export const trash = async (request, params) => {
     try {
         const { id } = params;
-
-        const deleteRes = await moviesSchema.findByIdAndDelete(id);
+        const deleteRes = await planSchema.findByIdAndDelete(id);
 
         return {
             data: deleteRes,
             status: 200
         }
-
     } catch (error) {
         return {
-            data: error.message,
+            data: error,
             status: 424
         }
     }
@@ -92,17 +93,15 @@ export const update = async (request, params) => {
     try {
         const { id } = params;
         const data = await request.json();
-
-        const updateRes = await moviesSchema.findByIdAndUpdate(id, data, { new: true });
+        const updateRes = await planSchema.findByIdAndUpdate(id, data, { new: true });
 
         return {
             data: updateRes,
             status: 200
         }
-
     } catch (error) {
         return {
-            data: error.message,
+            data: error,
             status: 424
         }
     }

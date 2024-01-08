@@ -23,6 +23,10 @@ const AdminPanel = ({ children }) => {
         {
             label: 'Media Jobs',
             href: '/admin-panel/jobs'
+        },
+        {
+            label: 'Plans',
+            href: '/admin-panel/plans'
         }
     ]
 
