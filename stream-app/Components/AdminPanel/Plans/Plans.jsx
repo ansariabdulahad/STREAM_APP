@@ -1,11 +1,15 @@
 'use client';
 import CreatePlans from "./CreatePlans/CreatePlans";
+import ShowPlans from "./ShowPlans/ShowPlans";
 
 const Plans = () => {
     const design = (
         <>
             <>
-                <CreatePlans />
+                <div className="flex flex-col gap-4">
+                    <CreatePlans />
+                    <ShowPlans />
+                </div>
             </>
         </>
     );

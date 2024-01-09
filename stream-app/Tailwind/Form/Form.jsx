@@ -4,7 +4,15 @@ import { ErrorMessage, Field, Form, Formik } from "formik";
 import * as yup from "yup";
 import { Button, Input, Select, UploadInput } from '..';
 
-const FormDesign = ({ fields, grid = 1, gap = 4, disabled = false, ...rest }) => {
+const FormDesign = ({
+    fields,
+    grid = 1,
+    gap = 4,
+    disabled = false,
+    formData = null,
+    btnType = 'create',
+    ...rest
+}) => {
 
     const schema = {
         fullname: yup.string().required('This field is required !'),
@@ -48,7 +56,7 @@ const FormDesign = ({ fields, grid = 1, gap = 4, disabled = false, ...rest }) =>
         const { props } = item;
         const { name } = props;
 
-        defaultValues[name] = "";
+        defaultValues[name] = formData ? formData[name] : "";
         validation[name] = schema[name];
     })
 
@@ -69,11 +77,19 @@ const FormDesign = ({ fields, grid = 1, gap = 4, disabled = false, ...rest }) =>
                                             formik={formik}
                                         />
                                     </div>
-                                    <Button
-                                        theme='error'
-                                        type='submit'
-                                        disabled={disabled}
-                                    >Submit</Button>
+                                    {
+                                        btnType === 'create'
+                                            ? <Button
+                                                theme='error'
+                                                type='submit'
+                                                disabled={disabled}
+                                            >Submit</Button>
+                                            : <Button
+                                                theme='info'
+                                                type='submit'
+                                                disabled={disabled}
+                                            >Save Changes</Button>
+                                    }
                                 </Form >
                             </>
                         )

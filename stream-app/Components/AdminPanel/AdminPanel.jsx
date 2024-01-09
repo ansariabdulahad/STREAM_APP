@@ -49,7 +49,7 @@ const AdminPanel = ({ children }) => {
 
     const Menu = ({ item }) => {
         const m = (
-            <div>
+            <div className="hover:bg-red-300">
                 <Button theme="t-primary">
                     <Link href={item.href} className="text-black">{item.label}</Link>
                 </Button>
