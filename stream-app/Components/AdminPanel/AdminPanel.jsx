@@ -61,7 +61,7 @@ const AdminPanel = ({ children }) => {
     const design = (
         <>
             <div className="min-h-screen flex">
-                <div className={`bg-white shadow-2xl overflow-x-hidden ${sidebar}`}>
+                <div className={`bg-gray-100 shadow-2xl overflow-x-hidden ${sidebar}`}>
                     {
                         menus.map((item, index) => {
                             return <Menu key={index} item={item} />

@@ -24,6 +24,10 @@ const Template = ({ children }) => {
                 href: '/blog'
             },
             {
+                label: 'PLANS',
+                href: '/plans'
+            },
+            {
                 label: 'CONTACT',
                 href: '/contact'
             }

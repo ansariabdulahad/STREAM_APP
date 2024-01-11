@@ -28,7 +28,7 @@ const Footer = () => {
                     <h1 className="text-gray-300 text-xl">
                         Follow Us
                     </h1>
-                    <div className="flex gap-3 my-4">
+                    <div className="grid grid-cols-4 gap-3 my-4">
                         <IconButton theme="primary">home</IconButton>
                         <IconButton theme="warning">home</IconButton>
                         <IconButton theme="success">home</IconButton>
