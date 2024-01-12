@@ -1,4 +1,8 @@
+import axios from "axios";
 import { Button, Card } from "../../Tailwind";
+import useRazorpay from "react-razorpay";
+
+const { NEXT_PUBLIC_RAZOR_KEY_ID, NEXT_PUBLIC_RAZOR_KEY_SECRET } = process.env;
 
 // FETCH DATA USING FETCH FUNCTION -- USE THIS FUNCTION WHEN DATA WILL SHOW IN SEARCH FUNCTIONALITY -- BEFORE LOGIN -- AFTER LOGIN USE SWR
 const getData = async () => {
@@ -12,6 +16,8 @@ const getData = async () => {
 }
 
 const Plans = async () => {
+
+    const [Razorpay] = useRazorpay();
 
     const data = await getData();
 
@@ -32,6 +38,47 @@ const Plans = async () => {
             color: 'black'
         }
     ]
+
+    const purchase = async (item) => {
+        const order = await axios({
+            method: 'POST',
+            url: '/api/razorpay/order',
+            data: {
+                amount: item.amount
+            }
+        });
+
+        const { id } = order.data.data;
+
+        const options = {
+            key: NEXT_PUBLIC_RAZOR_KEY_ID, // Enter the Key ID generated from the Dashboard
+            amount: item.amount, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+            currency: "INR",
+            name: "Acme Corp",
+            description: "Test Transaction",
+            image: "https://example.com/your_logo",
+            order_id: id, //This is a sample Order ID. Pass the `id` obtained in the response of createOrder().
+            handler: function (response) {
+                alert(response.razorpay_payment_id);
+                alert(response.razorpay_order_id);
+                alert(response.razorpay_signature);
+            },
+            prefill: {
+                name: "Piyush Garg",
+                email: "youremail@example.com",
+                contact: "9999999999",
+            },
+            notes: {
+                address: "Razorpay Corporate Office",
+            },
+            theme: {
+                color: "#3399cc",
+            },
+        };
+
+        const razor = new Razorpay(options);
+        razor.open();
+    }
 
     const AllPlans = ({ item, index }) => {
         const plan = (
@@ -70,6 +117,7 @@ const Plans = async () => {
                                 color: 'white',
                                 ...colors[index]
                             }}
+                            onClick={() => purchase(item)}
                         >Buy Now</Button>
                         <div
                             className="text-2xl font-bold uppercase"
