@@ -1,6 +1,8 @@
 import axios from "axios";
 import { Button, Card } from "../../Tailwind";
 import useRazorpay from "react-razorpay";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 const { NEXT_PUBLIC_RAZOR_KEY_ID, NEXT_PUBLIC_RAZOR_KEY_SECRET } = process.env;
 
@@ -16,7 +18,8 @@ const getData = async () => {
 }
 
 const Plans = async () => {
-
+    const router = useRouter();
+    const { data: session } = useSession();
     const [Razorpay] = useRazorpay();
 
     const data = await getData();
@@ -39,7 +42,27 @@ const Plans = async () => {
         }
     ]
 
+    const purchaseEntry = async (data) => {
+        try {
+            const response = await axios({
+                method: 'POST',
+                url: '/api/purchase',
+                data: data
+            });
+
+            console.log(response.data.data);
+        } catch (error) {
+            console.log(error.response.data);
+        }
+    }
+
     const purchase = async (item) => {
+
+        // CHECK USER IF LOGGED IN OR NOT
+        if (!session) {
+            return router.push('/login');
+        }
+
         const order = await axios({
             method: 'POST',
             url: '/api/razorpay/order',
@@ -54,22 +77,26 @@ const Plans = async () => {
             key: NEXT_PUBLIC_RAZOR_KEY_ID, // Enter the Key ID generated from the Dashboard
             amount: item.amount, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
             currency: "INR",
-            name: "Acme Corp",
-            description: "Test Transaction",
-            image: "https://example.com/your_logo",
+            name: "StreamJUST",
+            description: item.title.toUpperCase() + " PLAN",
+            image: '/logo.jpg',
             order_id: id, //This is a sample Order ID. Pass the `id` obtained in the response of createOrder().
             handler: function (response) {
-                alert(response.razorpay_payment_id);
-                alert(response.razorpay_order_id);
-                alert(response.razorpay_signature);
+                purchaseEntry({
+                    email: session.user.email,
+                    planId: item._id,
+                    paymentId: response.razorpay_payment_id,
+                    orderId: response.razorpay_order_id,
+                    signature: response.razorpay_signature
+                }); // FUNCTION CALLING TO CREATE PURCHASE IN TABLE
             },
             prefill: {
-                name: "Piyush Garg",
-                email: "youremail@example.com",
-                contact: "9999999999",
+                name: session.user.name,
+                email: session.user.email,
+                contact: "9545282408",
             },
             notes: {
-                address: "Razorpay Corporate Office",
+                address: "757, yusuf APT 1st flr",
             },
             theme: {
                 color: "#3399cc",
