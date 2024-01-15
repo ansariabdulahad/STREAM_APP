@@ -4,6 +4,7 @@ import { NextResponse } from "next/server"
 const { ADMIN_SECRET } = process.env;
 
 export const middleware = async (request) => {
+    const response = NextResponse.next();
     const url = new URL(request.url);
     const token = url.searchParams.get('token');
 
@@ -13,12 +14,16 @@ export const middleware = async (request) => {
 
     try {
         const secret = new TextEncoder().encode(ADMIN_SECRET);
-        console.log("SECRET :: ", secret);
-        const data = await jwtVerify(token, secret);
-        console.log(data);
+        await jwtVerify(token, secret);
+
+        // SET COOKIE
+        response.cookies.set('admin', token, { httpOnly: true });
+
+        return response;
     } catch (error) {
-        console.log(error);
-        return NextResponse.rewrite(new URL('/', request.url));
+        // DELETE COOKIE
+        response.cookies.delete('admin');
+        return response;
     }
 }
 

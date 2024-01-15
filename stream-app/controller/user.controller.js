@@ -47,6 +47,7 @@ export const login = async (request) => {
 
 export const signup = async (request) => {
     try {
+        console.log(request.cookies.get('admin'))
         const data = await request.json();
         const newUser = await new userSchema(data).save();
         const newData = newUser.toObject();
