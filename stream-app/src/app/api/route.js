@@ -1,25 +1,22 @@
 import { NextResponse } from "next/server"
+import jwt from 'jsonwebtoken';
 
-export const GET = (request) => {
-    return NextResponse.json({
-        message: "GET request"
-    }, { status: 200 });
-}
+export const GET = async (request) => {
 
-export const POST = (request) => {
-    return NextResponse.json({
-        message: 'POST request'
-    }, { status: 200 });
-}
+    const token = await jwt.sign(
+        {
+            data: {
+                name: 'JUST FOR CODE',
+                role: 'ADMIN'
+            }
+        },
+        process.env.ADMIN_SECRET,
+        {
+            expiresIn: 600
+        }
+    );
 
-export const PUT = (request) => {
     return NextResponse.json({
-        message: 'PUT request'
-    }, { status: 200 });
-}
-
-export const DELETE = (request) => {
-    return NextResponse.json({
-        message: 'DELETE request'
+        token: token
     }, { status: 200 });
 }
