@@ -1,3 +1,4 @@
+import { adminMiddleware } from '../middleware/admin.middleware';
 import { decrypt, encrypt } from '../module/bcrypt.module';
 import '../module/db.module';
 import userSchema from '../schema/user.schema';
@@ -47,8 +48,13 @@ export const login = async (request) => {
 
 export const signup = async (request) => {
     try {
-        console.log(request.cookies.get('admin'))
         const data = await request.json();
+        try {
+            await adminMiddleware(request);
+            data['role'] = 'ADMIN';
+        } catch (error) {
+            data['role'] = 'USER';
+        }
         const newUser = await new userSchema(data).save();
         const newData = newUser.toObject();
         delete newData.password;
@@ -56,6 +62,7 @@ export const signup = async (request) => {
             data: newData,
             status: 200
         }
+
     } catch (error) {
         return {
             data: error,

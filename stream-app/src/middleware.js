@@ -10,7 +10,11 @@ export const middleware = async (request) => {
 
     // HANDLING REGISTER PAGE ONLY
     // Check if the token matches the current token
-    if (!token) return NextResponse.rewrite(new URL('/register', request.url));
+    if (!token) {
+        // DELETE COOKIE
+        response.cookies.delete('admin');
+        return response;
+    }
 
     try {
         const secret = new TextEncoder().encode(ADMIN_SECRET);
