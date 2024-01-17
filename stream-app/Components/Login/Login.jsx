@@ -65,7 +65,7 @@ const Login = () => {
             <>
                 <div className={`min-h-screen ${Style.main}`}>
                     <div className={`flex items-center justify-center min-h-screen ${Style.opacity}`}>
-                        <div className='w-3/12'>
+                        <div className='sm:w-3/12 md:w-4/12'>
                             <Card>
                                 <div className='flex flex-col gap-4'>
                                     {

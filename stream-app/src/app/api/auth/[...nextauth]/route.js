@@ -4,6 +4,7 @@ import FacebookProvider from "next-auth/providers/facebook";
 import GitHubProvider from "next-auth/providers/github";
 import CredentialsProvider from "next-auth/providers/credentials";
 import axios from "axios";
+import { cookies } from 'next/headers';
 
 const { NEXT_PUBLIC_ENDPOINT, NEXT_PUBLIC_NEXT_AUTH_SECRET } = process.env;
 
@@ -32,6 +33,13 @@ const handler = NextAuth({
                         url: `${NEXT_PUBLIC_ENDPOINT}/api/user?email=${email}&password=${password}`
                     });
 
+                    const token = response.data.data.user.token;
+                    cookies().set({
+                        name: 'authToken',
+                        value: token,
+                        httpOnly: true,
+                        maxAge: 86400
+                    });
                     return response.data.data.user;
 
                 } catch (error) {
@@ -53,6 +61,20 @@ const handler = NextAuth({
         })
     ],
     secret: NEXT_PUBLIC_NEXT_AUTH_SECRET,
+    callbacks: {
+        jwt: ({ token, user }) => {
+            if (user) {
+                token.role = user.role;
+            }
+            return token;
+        },
+        session: ({ token, session }) => {
+            if (token) {
+                session.user.role = token.role;
+            }
+            return session;
+        }
+    },
     pages: {
         signIn: '/login'
     },

@@ -1,3 +1,4 @@
+import { SignJWT } from 'jose';
 import { adminMiddleware } from '../middleware/admin.middleware';
 import { decrypt, encrypt } from '../module/bcrypt.module';
 import '../module/db.module';
@@ -24,6 +25,15 @@ export const login = async (request) => {
         const login = await decrypt(query.password, userData.password);
 
         if (login) {
+            // GENERATE TOKEN TO SECURE API
+            const alg = 'HS256';
+            const secret = new TextEncoder().encode(process.env.ADMIN_SECRET);
+            const token = await new SignJWT(loginData)
+                .setProtectedHeader({ alg })
+                .setExpirationTime('24h')
+                .sign(secret);
+
+            loginData.token = token;
             return {
                 data: {
                     user: loginData

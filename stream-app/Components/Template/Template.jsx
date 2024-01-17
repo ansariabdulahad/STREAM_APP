@@ -51,7 +51,7 @@ const Template = ({ children }) => {
     const afterLogin = [
         {
             label: data && data.user.name,
-            href: '/register',
+            href: data && data.user.role === 'ADMIN' ? 'admin-panel/plans':'/profile',
             icon: 'person'
         },
         {
