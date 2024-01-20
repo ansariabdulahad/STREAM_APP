@@ -46,10 +46,14 @@ export const activeMovies = async (request) => {
             const { searchParams } = new URL(request.url);
             const skip = searchParams.get('skip');
             const movies = await moviesSchema.find({ active: true }).skip(skip ? skip : 0).limit(12);
+            const total = await moviesSchema.countDocuments();
 
             if (movies.length > 0) {
                 return {
-                    data: movies,
+                    data: {
+                        movies,
+                        total
+                    },
                     status: 200
                 }
             }

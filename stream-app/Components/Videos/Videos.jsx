@@ -1,25 +1,64 @@
 import Link from "next/link";
 import { Button } from "../../Tailwind";
+import { useEffect, useState } from "react";
+import axios from "axios";
 
-const getData = async () => {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_ENDPOINT}/api/movies/active`);
 
-    if (!response.ok) {
-        throw new Error('Failed to retrieve movies from database !');
-    }
-    return response.json();
-}
 
-const Videos = async () => {
-    const data = await getData();
-    console.log(data);
+const Videos = async ({ videos }) => {
+
+    const [Videos, setVideos] = useState(videos);
+    const [skip, setSkip] = useState(0);
+
+    useEffect(() => {
+        if (skip > 0) {
+            const request = async () => {
+                const response = await axios({
+                    method: 'GET',
+                    url: `/api/movies/active?skip=${skip}`
+                });
+
+                const { movies } = response.data.data;
+
+                // Two ways to update the movies 
+                // 1st type
+                setVideos({ ...Videos, movies: [...Videos.movies, ...movies] });
+
+                // 2nd type
+                // setVideos((oldData) => {
+                //     return {
+                //         ...oldData,
+                //         movies: [...oldData.movies, ...movies]
+                //     }
+                // })
+            }
+            request(); // calling...
+        }
+    }, [skip]);
+
+    useEffect(() => {
+        window.onscroll = () => {
+            if ((window.innerHeight + window.scrollY) >= 1000) { // document.body.offsetHeight
+                if (skip < Videos.total) {
+                    let add = skip + 12;
+                    let result = Videos.total - add;
+                    if (result < 0) {
+                        add = (add + result) - 1;
+                    }
+                    setSkip(add);
+                }
+            }
+        }
+    }, [skip]);
+
     const design = (
         <>
             <>
                 <div className="container p-8 sm:p-16">
+                    <h2 className="text-2xl font-bold mb-4">VIDEOS <sup className="font-thin">{skip} / {Videos.total}</sup></h2>
                     <div className="grid sm:grid-cols-4 gap-8">
                         {
-                            data && data.data.map((item, index) => (
+                            Videos.movies && Videos.movies.map((item, index) => (
                                 <div key={index} className="relative">
                                     <img src={`${process.env.NEXT_PUBLIC_CLOUDFRONT}/${item.thumbnail}`} width={'100%'} alt="thumbnail" />
                                     <div
@@ -32,7 +71,7 @@ const Videos = async () => {
                                             {item.title}
                                         </h1>
                                         <p className="text-white">
-                                            {item.duration}
+                                            {(item.duration / 60).toFixed(2)} Min
                                         </p>
                                         <Link href={{
                                             pathname: `/videos/${item.title.toLowerCase().split(" ").join("-")}`,
