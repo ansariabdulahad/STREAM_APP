@@ -20,7 +20,7 @@ import videojs from "video.js";
 import { useEffect, useRef } from 'react';
 import { Button } from '../../Tailwind';
 
-const VideoPlayer = () => {
+const VideoPlayer = ({ params }) => {
 
     const video = useRef();
     const player = useRef(null);
@@ -29,13 +29,14 @@ const VideoPlayer = () => {
         controls: true,
         sources: [
             {
-                src: 'https://dq6r1956vc1pq.cloudfront.net/hls/test.mpd',
+                src: `${process.env.NEXT_PUBLIC_CLOUDFRONT}/stream/original/${params.customTitle}/${params.customTitle}.mpd`,
                 type: 'application/dash+xml' // application/x-mpegURL for .m3u8 extension and application/dash+xml for .mpd extension
             }
         ],
         fluid: true,
         playbackRates: [0.5, 1, 1.5, 2, 2.5, 3],
-        autoplay: true
+        autoplay: true,
+        poster: `${process.env.NEXT_PUBLIC_CLOUDFRONT}/${params.thumbnail}`
     }
 
     const onReady = (v_player) => {
@@ -87,12 +88,10 @@ const VideoPlayer = () => {
 
     const design = (
         <>
-            <div className='w-9/12'>
-                <video
-                    ref={video}
-                    className='video-js vjs-big-play-centered vjs-theme-fantasy'
-                />
-            </div>
+            <video
+                ref={video}
+                className='video-js vjs-big-play-centered vjs-theme-fantasy'
+            />
         </>
     );
     return design;

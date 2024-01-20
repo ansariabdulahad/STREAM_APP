@@ -38,6 +38,44 @@ export const fetch = async (request) => {
     }
 }
 
+export const activeMovies = async (request) => {
+
+    try {
+        // await secureAdminMiddleware(request); // Im using this middleware in main route instead of controller it is working fine
+        try {
+            const { searchParams } = new URL(request.url);
+            const skip = searchParams.get('skip');
+            const movies = await moviesSchema.find({ active: true }).skip(skip ? skip : 0).limit(12);
+
+            if (movies.length > 0) {
+                return {
+                    data: movies,
+                    status: 200
+                }
+            }
+            else {
+                return {
+                    data: "No Data Found",
+                    status: 404
+                }
+            }
+
+        } catch (error) {
+            return {
+                data: error,
+                status: 424
+            }
+        }
+    } catch (error) {
+        return {
+            data: {
+                message: "Invalid User"
+            },
+            status: 401
+        }
+    }
+}
+
 export const fetchById = async (request, params) => {
     try {
         const { id } = params;
@@ -112,6 +150,24 @@ export const update = async (request, params) => {
             status: 200
         }
 
+    } catch (error) {
+        return {
+            data: error.message,
+            status: 424
+        }
+    }
+}
+
+export const makeMovieActive = async (request, params) => {
+    try {
+        const { id } = params;
+
+        const updateRes = await moviesSchema.updateOne({ job_id: id }, { active: true }, { new: true });
+
+        return {
+            data: updateRes,
+            status: 200
+        }
     } catch (error) {
         return {
             data: error.message,

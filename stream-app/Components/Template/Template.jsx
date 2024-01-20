@@ -20,8 +20,8 @@ const Template = ({ children }) => {
                 href: '/movies'
             },
             {
-                label: 'BLOG',
-                href: '/blog'
+                label: 'VIDEOS',
+                href: '/videos'
             },
             {
                 label: 'PLANS',
@@ -51,7 +51,7 @@ const Template = ({ children }) => {
     const afterLogin = [
         {
             label: data && data.user.name,
-            href: data && data.user.role === 'ADMIN' ? 'admin-panel/plans':'/profile',
+            href: data && data.user.role === 'ADMIN' ? 'admin-panel/plans' : '/profile',
             icon: 'person'
         },
         {

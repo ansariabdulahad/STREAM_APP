@@ -45,8 +45,20 @@ const Jobs = () => {
             url: '/api/media-convert/' + id
         });
     }
+    const makeActive = async (id) => {
+        try {
+            await axios({
+                method: 'PATCH',
+                url: `/api/movies/${id}`
+            });
+            alert('Success to make active');
+        } catch (error) {
+            alert('Failed to make active');
+        }
+    }
 
     const Tr = ({ item, index }) => {
+        console.log("TR :: ", item);
 
         const input = item.Settings.Inputs[0].FileInput.split('/');
         // const dateObj = new Date(item.CreatedAt);
@@ -88,6 +100,14 @@ const Jobs = () => {
                                     theme="error"
                                     onClick={() => cancle(item.Id)}
                                 >Cancle</Button>
+                            : null
+                    }
+                    {
+                        item.Status === 'COMPLETE'
+                            ? <Button
+                                onClick={() => makeActive(item.Id)}
+                                theme="success"
+                            >Make Active</Button>
                             : null
                     }
                 </td>

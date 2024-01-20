@@ -202,7 +202,7 @@ const Movies = () => {
             return response.data.data;
 
         } catch (error) {
-            return error.response.data;
+            return [];
         }
     }
 
@@ -232,31 +232,36 @@ const Movies = () => {
     const MovieList = ({ item }) => {
         const list = (
             <>
-                <Card>
-                    <img src="/a.jpg" width={'100%'} alt="thumbnail" />
-                    <h1 className="font-bold capitalize">
-                        {item.title}
-                    </h1>
-                    <p>{item.desc}</p>
-                    <p>{item.category}</p>
-                    <p>{item.keywords}</p>
-                    <div className="flex items-center gap-2 mt-3">
-                        <IconButton
-                            onClick={openDialog}
-                            size="sm"
-                            theme="secondary"
-                        >
-                            edit
-                        </IconButton>
-                        <IconButton
-                            onClick={() => deleteMe(item._id)}
-                            size="sm"
-                            theme="error"
-                        >
-                            delete
-                        </IconButton>
-                    </div>
-                </Card>
+                <>
+                    <Card className={'rounded-lg shadow-sm'}>
+                        <img src={`${process.env.NEXT_PUBLIC_CLOUDFRONT}/${item.thumbnail}`} width={'100%'} alt="thumbnail"
+                            className="rounded-lg mb-3"
+                        />
+                        <h1 className="font-bold capitalize">
+                            {item.title}
+                        </h1>
+                        <p>{item.desc.slice(0, 100) + "...."}</p>
+                        <p className="font-bold my-3">{item.category}</p>
+                        <p>{item.keywords}</p>
+                        <hr />
+                        <div className="flex items-center gap-2 mt-3">
+                            <IconButton
+                                onClick={openDialog}
+                                size="sm"
+                                theme="secondary"
+                            >
+                                edit
+                            </IconButton>
+                            <IconButton
+                                onClick={() => deleteMe(item._id)}
+                                size="sm"
+                                theme="error"
+                            >
+                                delete
+                            </IconButton>
+                        </div>
+                    </Card>
+                </>
             </>
         );
         return list;
@@ -265,56 +270,58 @@ const Movies = () => {
     const Steps = () => {
         const step = (
             <>
-                <Card title={filename}>
-                    <div className="grid grid-cols-4 gap-2">
-                        <div>
-                            <label className="font-bold mb-1 text-sm">
-                                Thumbnail - {progress.thumbnail + "%"}
-                            </label>
-                            <div className="bg-gray-200 h-1.5">
-                                <div className="bg-green-500 h-full"
-                                    style={{
-                                        width: progress.thumbnail + "%"
-                                    }}
-                                >
+                <>
+                    <Card title={filename}>
+                        <div className="grid grid-cols-4 gap-2">
+                            <div>
+                                <label className="font-bold mb-1 text-sm">
+                                    Thumbnail - {progress.thumbnail + "%"}
+                                </label>
+                                <div className="bg-gray-200 h-1.5">
+                                    <div className="bg-green-500 h-full"
+                                        style={{
+                                            width: progress.thumbnail + "%"
+                                        }}
+                                    >
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div>
-                            <label className="font-bold mb-1 text-sm">
-                                Video - {progress.video + "%"}
-                            </label>
-                            <div className="bg-gray-200 h-1.5">
-                                <div className="bg-green-500 h-full"
-                                    style={{
-                                        width: progress.video + "%"
-                                    }}
-                                >
+                            <div>
+                                <label className="font-bold mb-1 text-sm">
+                                    Video - {progress.video + "%"}
+                                </label>
+                                <div className="bg-gray-200 h-1.5">
+                                    <div className="bg-green-500 h-full"
+                                        style={{
+                                            width: progress.video + "%"
+                                        }}
+                                    >
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div>
-                            <label className="font-bold mb-1 text-sm">Job</label>
-                            <div className="bg-gray-200 h-1.5 overflow-hidden">
-                                <div className={`bg-green-500 w-0 h-full 
+                            <div>
+                                <label className="font-bold mb-1 text-sm">Job</label>
+                                <div className="bg-gray-200 h-1.5 overflow-hidden">
+                                    <div className={`bg-green-500 w-0 h-full 
                                 ${MoviesReducer.job_loading ? 'infinite' : null}
                                 ${MoviesReducer.job_success ? 'w-full' : null}
                                 `}>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div>
-                            <label className="font-bold mb-1 text-sm">Finalizing</label>
-                            <div className="bg-gray-200 h-1.5 overflow-hidden">
-                                <div className={`bg-green-500 w-0 h-full  
+                            <div>
+                                <label className="font-bold mb-1 text-sm">Finalizing</label>
+                                <div className="bg-gray-200 h-1.5 overflow-hidden">
+                                    <div className={`bg-green-500 w-0 h-full  
                                 ${MoviesReducer.movie_loading ? 'infinite' : null}
                                 ${MoviesReducer.movie_success ? 'w-full' : null}
                                 `}>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </Card>
+                    </Card>
+                </>
             </>
         );
         return step;
@@ -323,13 +330,14 @@ const Movies = () => {
     const MovieForm = () => {
         const form = (
             <>
-                <h1 className="text-xl font-bold text-left mb-3">Add New Video</h1>
-                <FormDesign
-                    onSubmit={onSubmit}
-                    fields={fields}
-                    grid={2}
-                    disabled={submit}
-                />
+                <>
+                    <h1 className="text-xl font-bold text-left mb-3">Add New Video</h1>
+                    <FormDesign
+                        onSubmit={onSubmit}
+                        fields={fields}
+                        disabled={submit}
+                    />
+                </>
             </>
         );
         return form;
@@ -337,19 +345,21 @@ const Movies = () => {
 
     const design = (
         <>
-            {
-                submit ? <Steps /> : null
-            }
-            <div className="grid sm:grid-cols-4 gap-4">
+            <>
                 {
-                    data && data.map((item, index) => {
-                        return <MovieList key={index} item={item} />
-                    })
+                    submit ? <Steps /> : null
                 }
-            </div>
-            <Dialog>
-                <MovieForm />
-            </Dialog>
+                <div className="grid sm:grid-cols-4 gap-4">
+                    {
+                        data && data.map((item, index) => {
+                            return <MovieList key={index} item={item} />
+                        })
+                    }
+                </div>
+                <Dialog>
+                    <MovieForm />
+                </Dialog>
+            </>
         </>
     );
     return design;
