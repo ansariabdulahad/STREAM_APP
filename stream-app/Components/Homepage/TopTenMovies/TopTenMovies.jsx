@@ -1,73 +1,10 @@
 import { useSelector } from "react-redux";
 import { Slider } from "../../../Tailwind";
 
-const TopTenMovies = () => {
+const TopTenMovies = ({ latest }) => {
 
     const { AnimationReducer } = useSelector(response => response);
     const { image } = AnimationReducer;
-
-    const data = [
-        {
-            thumbnail: 'sanddust2.jpg',
-            title: 'Sanddust 2',
-            duration: '02:00:00'
-        },
-        {
-            thumbnail: 'movie-abc.png',
-            title: 'KingKong',
-            duration: '01:50:00'
-        },
-        {
-            thumbnail: 'movie-xyz.png',
-            title: 'God Zilla',
-            duration: '03:20:00'
-        },
-        {
-            thumbnail: 'sanddust2.jpg',
-            title: 'Sanddust 2',
-            duration: '02:00:00'
-        },
-        {
-            thumbnail: 'movie-abc.png',
-            title: 'KingKong',
-            duration: '01:50:00'
-        },
-        {
-            thumbnail: 'movie-xyz.png',
-            title: 'God Zilla',
-            duration: '03:20:00'
-        },
-        {
-            thumbnail: 'sanddust2.jpg',
-            title: 'Sanddust 2',
-            duration: '02:00:00'
-        },
-        {
-            thumbnail: 'movie-abc.png',
-            title: 'KingKong',
-            duration: '01:50:00'
-        },
-        {
-            thumbnail: 'movie-xyz.png',
-            title: 'God Zilla',
-            duration: '03:20:00'
-        },
-        {
-            thumbnail: 'sanddust2.jpg',
-            title: 'Sanddust 2',
-            duration: '02:00:00'
-        },
-        {
-            thumbnail: 'movie-abc.png',
-            title: 'KingKong',
-            duration: '01:50:00'
-        },
-        {
-            thumbnail: 'movie-xyz.png',
-            title: 'God Zilla',
-            duration: '03:20:00'
-        }
-    ]
 
     const design = (
         <>
@@ -95,7 +32,7 @@ const TopTenMovies = () => {
                             height: 516
                         }}
                     >
-                        <Slider data={data} verticle={true} />
+                        <Slider data={latest} verticle={true} />
                     </div>
                 </div>
             </div>

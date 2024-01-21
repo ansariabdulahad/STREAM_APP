@@ -4,12 +4,18 @@ import Template from "../../../Components/Template/Template";
 import Videos from "../../../Components/Videos/Videos";
 
 const getData = async () => {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_ENDPOINT}/api/movies/active`);
+    return new Promise(async (resolve, reject) => {
+        try {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_ENDPOINT}/api/movies/active`);
 
-    if (!response.ok) {
-        throw new Error('Failed to retrieve movies from database !');
-    }
-    return response.json();
+            if (!response.ok) {
+                return reject(new Error('Failed to retrieve movies from database !'));
+            }
+            return resolve(response.json());
+        } catch (error) {
+            return reject(error);
+        }
+    })
 }
 
 const Page = async () => {

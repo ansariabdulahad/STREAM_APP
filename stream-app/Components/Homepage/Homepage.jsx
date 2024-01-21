@@ -4,16 +4,16 @@ import TopTenMovies from "./TopTenMovies/TopTenMovies";
 import TrendingMovies from "./TrendingMovies/TrendingMovies";
 import UpcomingMovies from "./UpcomingMovies/UpcomingMovies";
 
-const Homepage = () => {
+const Homepage = ({ latestMovies }) => {
     const design = (
         <>
-            <Header />
+            <Header latest={latestMovies} />
             <div className="bg-slate-800 p-8 sm:p-16">
                 <div className="flex flex-col gap-8 sm:gap-16">
-                    <LatestMovies />
-                    <UpcomingMovies />
-                    <TopTenMovies />
-                    <TrendingMovies />
+                    <LatestMovies latest={latestMovies} title={'LATEST MOVIES'} />
+                    <UpcomingMovies latest={latestMovies} title={'UPCOMING MOVIES'} />
+                    <TopTenMovies latest={latestMovies} />
+                    <TrendingMovies latest={latestMovies} title={'TRENDING MOVIES'} />
                 </div>
             </div>
         </>

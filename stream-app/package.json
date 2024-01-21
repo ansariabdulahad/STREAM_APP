@@ -39,6 +39,7 @@
     "redux": "^5.0.0",
     "redux-logger": "^3.0.6",
     "redux-thunk": "^3.1.0",
+    "swiper": "^11.0.5",
     "swr": "^2.2.4",
     "videojs-contrib-quality-levels": "^4.0.0",
     "videojs-hotkeys": "^0.2.28",
