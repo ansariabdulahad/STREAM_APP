@@ -30,7 +30,7 @@ const handler = NextAuth({
                 try {
                     const response = await axios({
                         method: 'GET',
-                        url: `${NEXT_PUBLIC_ENDPOINT}/api/user?email=${email}&password=${password}`
+                        url: `${process.env.NEXT_PUBLIC_ENDPOINT}/api/user?email=${email}&password=${password}`
                     });
 
                     const token = response.data.data.user.token;
@@ -60,7 +60,7 @@ const handler = NextAuth({
             clientSecret: process.env.NEXT_PUBLIC_GITHUB_SECRET
         })
     ],
-    secret: NEXT_PUBLIC_NEXT_AUTH_SECRET,
+    secret: process.env.NEXT_PUBLIC_NEXT_AUTH_SECRET,
     callbacks: {
         jwt: ({ token, user }) => {
             if (user) {

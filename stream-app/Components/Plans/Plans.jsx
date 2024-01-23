@@ -3,6 +3,7 @@ import { Button, Card } from "../../Tailwind";
 import useRazorpay from "react-razorpay";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 
 const { NEXT_PUBLIC_RAZOR_KEY_ID, NEXT_PUBLIC_RAZOR_KEY_SECRET } = process.env;
 
@@ -19,6 +20,7 @@ const getData = async () => {
 
 const Plans = async () => {
     const router = useRouter();
+    const pathname = usePathname();
     const { data: session } = useSession();
     const [Razorpay] = useRazorpay();
 
@@ -171,12 +173,15 @@ const Plans = async () => {
     const design = (
         <>
             <>
-                <div className="grid sm:grid-cols-3 gap-8 sm:gap-12 p-8 sm:p-16">
-                    {
-                        data && data.data.map((item, index) => {
-                            return <AllPlans key={index} item={item} index={index} />
-                        })
-                    }
+                <div className="container p-4 sm:p-8">
+                    <h2 className="text-4xl font-bold capitalize text-center">{pathname.slice(1)}</h2>
+                    <div className="grid sm:grid-cols-3 gap-8 sm:gap-12 p-8 sm:p-16">
+                        {
+                            data && data.data.map((item, index) => {
+                                return <AllPlans key={index} item={item} index={index} />
+                            })
+                        }
+                    </div>
                 </div>
             </>
         </>

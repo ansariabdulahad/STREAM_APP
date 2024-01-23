@@ -2,13 +2,14 @@ import Link from "next/link";
 import { Button } from "../../Tailwind";
 import { useEffect, useState } from "react";
 import axios from "axios";
-
-
+import { usePathname } from "next/navigation";
 
 const Videos = async ({ videos }) => {
 
     const [Videos, setVideos] = useState(videos);
     const [skip, setSkip] = useState(0);
+
+    const pathname = usePathname();
 
     useEffect(() => {
         if (skip > 0) {
@@ -55,7 +56,7 @@ const Videos = async ({ videos }) => {
         <>
             <>
                 <div className="container p-8 sm:p-16">
-                    <h2 className="text-2xl font-bold mb-4">VIDEOS <sup className="font-thin">{skip} / {Videos.total}</sup></h2>
+                    <h2 className="text-2xl font-bold mb-4 capitalize">{pathname.slice(1)} <sup className="font-thin">{skip} / {Videos.total}</sup></h2>
                     <div className="grid sm:grid-cols-4 gap-8">
                         {
                             Videos.movies && Videos.movies.map((item, index) => (
