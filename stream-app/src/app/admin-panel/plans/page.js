@@ -2,7 +2,8 @@ import Head from "next/head";
 import AdminPanel from "../../../../Components/AdminPanel/AdminPanel";
 import Plans from "../../../../Components/AdminPanel/Plans/Plans";
 
-const page = () => {
+const page = async () => {
+    
     const design = (
         <>
             <>

@@ -5,7 +5,7 @@ import { secureAdminMiddleware } from "../../../../middleware/secure-admin-api-m
 export const GET = async (request) => {
 
     try {
-        await secureAdminMiddleware(request);
+        // await secureAdminMiddleware(request);
 
         const response = await fetch(request);
         const { data, status } = response;

@@ -5,18 +5,16 @@ import Template from "../../../Components/Template/Template";
 import Videos from "../../../Components/Videos/Videos";
 
 const getData = async () => {
-    return new Promise(async (resolve, reject) => {
-        try {
-            const response = await fetch(`${process.env.NEXT_PUBLIC_ENDPOINT}/api/movies/active`);
+    try {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_ENDPOINT}/api/movies/active`);
 
-            if (!response.ok) {
-                return reject(new Error('Failed to retrieve movies from database !'));
-            }
-            return resolve(response.json());
-        } catch (error) {
-            return reject(error);
+        if (!response.ok) {
+            return new Error('Failed to retrieve movies from database !');
         }
-    })
+        return response.json();
+    } catch (error) {
+        return [];
+    }
 }
 
 const Page = async () => {
@@ -33,7 +31,7 @@ const Page = async () => {
                         <meta property="og:description" content="There are far more ways to stream video than Amazon Prime Video, Hulu, and Netflix. These are the top streaming services based on price, catalog, features, ..." key="ogdescription" />
                         <meta property="og:image" content="https://encrypted-tbn0.gstatic.com/imagesq=tbn:ANd9GcTXrtJBfK1eObEYBnpVWe5hhRV4PL-U5TyBFw&usqp=CAU" key="ogimage" />
                     </Head>
-                    <Videos videos={data && data.data} />
+                    <Videos videos={(data && data.data) ? data.data : []} />
                 </Template>
             </>
         </>

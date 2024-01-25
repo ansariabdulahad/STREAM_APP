@@ -4,27 +4,33 @@ import useRazorpay from "react-razorpay";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { usePathname } from "next/navigation";
+import useSWR from "swr";
 
 const { NEXT_PUBLIC_RAZOR_KEY_ID, NEXT_PUBLIC_RAZOR_KEY_SECRET } = process.env;
 
-// FETCH DATA USING FETCH FUNCTION -- USE THIS FUNCTION WHEN DATA WILL SHOW IN SEARCH FUNCTIONALITY -- BEFORE LOGIN -- AFTER LOGIN USE SWR
-const getData = async () => {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_ENDPOINT}/api/plan`);
-
-    if (!response.ok) {
-        throw new Error('Could not get data from server');
-    }
-
-    return response.json();
-}
-
-const Plans = async () => {
+const Plans = async ({ plans }) => {
     const router = useRouter();
     const pathname = usePathname();
     const { data: session } = useSession();
     const [Razorpay] = useRazorpay();
 
-    const data = await getData();
+    const getData = async (url) => {
+        try {
+            const response = await axios({
+                method: 'GET',
+                url
+            });
+            return response.data.data;
+        } catch (error) {
+            return null;
+        }
+    }
+
+    const { data: userPlan, error: userError } = useSWR(
+        session ? `/api/purchase/${session.user.email}` : null,
+        session ? getData : null,
+        { refreshInterval: 5000 }
+    );
 
     const colors = [
         {
@@ -87,6 +93,7 @@ const Plans = async () => {
                 purchaseEntry({
                     email: session.user.email,
                     planId: item._id,
+                    emi: item.emi,
                     paymentId: response.razorpay_payment_id,
                     orderId: response.razorpay_order_id,
                     signature: response.razorpay_signature
@@ -138,16 +145,35 @@ const Plans = async () => {
                                 color: '#444'
                             }}
                         >{item.desc}</pre>
-                        <Button
-                            theme="secondary"
-                            className="my-5 rounded-lg"
-                            style={{
-                                backgroundColor: 'red',
-                                color: 'white',
-                                ...colors[index]
-                            }}
-                            onClick={() => purchase(item)}
-                        >Buy Now</Button>
+                        {
+                            (userPlan && userPlan.plan.planId) === item._id
+                                ? userPlan.diff >= 0
+                                    ? <h1 className="text-3xl font-bold mt-3 text-red-500">{`${userPlan.diff} Days Remaining`}</h1>
+                                    : <Button
+                                        theme="secondary"
+                                        className="my-5 rounded-lg"
+                                        style={{
+                                            backgroundColor: 'red',
+                                            color: 'white',
+                                            ...colors[index]
+                                        }}
+                                        onClick={() => purchase(item)}
+                                    >
+                                        Buy Now
+                                    </Button>
+                                : <Button
+                                    theme="secondary"
+                                    className="my-5 rounded-lg"
+                                    style={{
+                                        backgroundColor: 'red',
+                                        color: 'white',
+                                        ...colors[index]
+                                    }}
+                                    onClick={() => purchase(item)}
+                                >
+                                    Buy Now
+                                </Button>
+                        }
                         <div
                             className="text-2xl font-bold uppercase"
                             style={{
@@ -177,7 +203,7 @@ const Plans = async () => {
                     <h2 className="text-4xl font-bold capitalize text-center">{pathname.slice(1)}</h2>
                     <div className="grid sm:grid-cols-3 gap-8 sm:gap-12 p-8 sm:p-16">
                         {
-                            data && data.data.map((item, index) => {
+                            plans && plans.map((item, index) => {
                                 return <AllPlans key={index} item={item} index={index} />
                             })
                         }
