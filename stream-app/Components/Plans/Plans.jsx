@@ -71,6 +71,11 @@ const Plans = async ({ plans }) => {
             return router.push('/login');
         }
 
+        // CHECK ADMIN IS LOGGED IN OR NOT
+        if (session.user.role === 'ADMIN') {
+            return router.push('/');
+        }
+
         const order = await axios({
             method: 'POST',
             url: '/api/razorpay/order',
