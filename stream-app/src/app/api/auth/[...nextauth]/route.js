@@ -5,6 +5,7 @@ import GitHubProvider from "next-auth/providers/github";
 import CredentialsProvider from "next-auth/providers/credentials";
 import axios from "axios";
 import { cookies } from 'next/headers';
+import crypto from 'crypto';
 
 const { NEXT_PUBLIC_ENDPOINT, NEXT_PUBLIC_NEXT_AUTH_SECRET } = process.env;
 
@@ -62,6 +63,27 @@ const handler = NextAuth({
     ],
     secret: process.env.NEXT_PUBLIC_NEXT_AUTH_SECRET,
     callbacks: {
+        async signIn({ account, profile }) {
+            if (account.type === 'oauth') {
+                const data = {
+                    name: profile.name,
+                    email: profile.email,
+                    password: crypto.randomBytes(4).toString('hex'),
+                    image: profile.picture
+                }
+                try {
+                    await axios({
+                        method: 'POST',
+                        url: `${process.env.NEXT_PUBLIC_ENDPOINT}/api/user`,
+                        data
+                    });
+                    return true;
+                } catch (error) {
+                    return true;
+                }
+            }
+            return true;
+        },
         jwt: ({ token, user }) => {
             if (user) {
                 token.role = user.role;

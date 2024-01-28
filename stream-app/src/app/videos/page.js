@@ -19,7 +19,6 @@ const getData = async () => {
 
 const Page = async () => {
     const data = await getData();
-    console.log(data)
     const design = (
         <>
             <>

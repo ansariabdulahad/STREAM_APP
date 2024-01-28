@@ -94,16 +94,18 @@ const Template = ({ children }) => {
 
     const design = (
         <>
-            <Navbar
-                menu={menus}
-                theme="dark"
-                toolbar={toolbars}
-                varient="three"
-            />
-            <div>
-                {children}
-            </div>
-            <Footer />
+            <>
+                <Navbar
+                    menu={menus}
+                    theme="dark"
+                    toolbar={toolbars}
+                    varient="three"
+                />
+                <div>
+                    {children}
+                </div>
+                <Footer />
+            </>
         </>
     );
     return design;

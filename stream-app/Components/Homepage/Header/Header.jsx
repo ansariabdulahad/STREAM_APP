@@ -7,7 +7,6 @@ import { Pagination, Navigation } from 'swiper/modules';
 import Link from 'next/link';
 
 const Header = ({ latest }) => {
-    console.log(latest);
     const design = (
         <>
             <>

@@ -8,34 +8,36 @@ const TopTenMovies = ({ latest }) => {
 
     const design = (
         <>
-            <div
-                className="rounded-lg shadow-lg shadow-slate-900"
-                style={{
-                    height: 600,
-                    transition: '0.5s ease',
-                    background: `url(${image ? image : 'sanddust2.jpg'}) center center no-repeat`,
-                    backgroundSize: 'cover',
-                }}
-            >
-                <div className="overflow-hidden h-full rounded-lg p-4 sm:p-8"
+            <>
+                <div
+                    className="rounded-lg shadow-lg shadow-slate-900"
                     style={{
-                        background: 'linear-gradient(to right, rgba(0, 0, 0, 0.9), transparent)'
+                        height: 600,
+                        transition: '0.5s ease',
+                        background: `url(${image ? image : 'sanddust2.jpg'}) center center no-repeat`,
+                        backgroundSize: 'cover',
                     }}
                 >
-                    <h1
-                        className="text-white text-3xl mb-4"
-                    >TOP TEN MOVIES</h1>
-                    <div
-                        className="relative"
+                    <div className="overflow-hidden h-full rounded-lg p-4 sm:p-8"
                         style={{
-                            width: 330,
-                            height: 516
+                            background: 'linear-gradient(to right, rgba(0, 0, 0, 0.9), transparent)'
                         }}
                     >
-                        <Slider data={latest} verticle={true} />
+                        <h1
+                            className="text-white text-3xl mb-4"
+                        >TOP TEN MOVIES</h1>
+                        <div
+                            className="relative"
+                            style={{
+                                width: 330,
+                                height: 516
+                            }}
+                        >
+                            <Slider data={latest} verticle={true} />
+                        </div>
                     </div>
                 </div>
-            </div>
+            </>
         </>
     );
     return design;

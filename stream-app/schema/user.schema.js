@@ -27,6 +27,13 @@ const userSchema = new Schema({
 });
 
 // MONGOOSE MIDDLEWARE
+
+userSchema.pre('save', async function (next) {
+    const isUser = await mongoose.model('user').findOne({ email: this.email });
+    if (isUser) return next(new Error('User Already exists !'));
+    next();
+})
+
 userSchema.pre('save', async function (next) {
     this.password = await encrypt(this.password); // bcrypt.hash(this.password.toString(), 12);
     next();

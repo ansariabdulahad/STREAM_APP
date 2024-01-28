@@ -8,7 +8,6 @@ import Link from 'next/link';
 import { Button } from '../../../Tailwind';
 
 const LatestMovies = ({ latest, title }) => {
-    console.log(latest);
     const design = (
         <>
             <>
