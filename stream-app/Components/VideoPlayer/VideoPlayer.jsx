@@ -11,7 +11,7 @@ import '@videojs/themes/dist/fantasy/index.css';
 // sea
 // import '@videojs/themes/dist/sea/index.css';
 
-import 'videojs-contrib-quality-levels';
+// import 'videojs-contrib-quality-levels';
 import 'jb-videojs-hls-quality-selector';
 import 'videojs-seek-buttons';
 import 'videojs-hotkeys';
@@ -47,9 +47,9 @@ const VideoPlayer = ({ params }) => {
         // }); // -- NOT WORKING PROPERLY --
 
         // FOR QUALITY FUNCTIONALITY ONLY
-        v_player.hlsQualitySelector({
-            displayCurrentQuality: true,
-        });
+        // v_player.hlsQualitySelector({
+        //     displayCurrentQuality: true,
+        // });
 
         // FOR KEYBOARD BUTTON FUNCTIONALITY ONLY
         v_player.hotkeys({
