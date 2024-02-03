@@ -4,6 +4,7 @@ import Head from "next/head";
 
 import Homepage from "../../Components/Homepage/Homepage";
 import Template from "../../Components/Template/Template";
+import useSWR from "swr";
 
 const getData = async () => {
   try {
@@ -19,9 +20,9 @@ const getData = async () => {
   }
 }
 
-const Page = async () => {
+const Page = () => {
 
-  const data = await getData();
+  const { data } = useSWR('/api/movies/latest', getData);
 
   const design = (
     <>

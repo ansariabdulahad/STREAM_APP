@@ -3,6 +3,7 @@
 import Head from "next/head";
 import Plans from "../../../Components/Plans/Plans";
 import Template from "../../../Components/Template/Template";
+import useSWR from "swr";
 
 // FETCH DATA USING FETCH FUNCTION -- USE THIS FUNCTION WHEN DATA WILL SHOW IN SEARCH FUNCTIONALITY -- BEFORE LOGIN -- AFTER LOGIN USE SWR
 const getData = async () => {
@@ -19,9 +20,9 @@ const getData = async () => {
     }
 }
 
-const Page = async () => {
+const Page = () => {
 
-    const data = await getData();
+    const { data } = useSWR('/api/plan', getData);
 
     const design = (
         <>

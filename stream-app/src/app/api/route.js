@@ -17,6 +17,6 @@ export const GET = async (request) => {
     // );
 
     return NextResponse.json({
-        token: token
+        token: "Success"
     }, { status: 200 });
 }
